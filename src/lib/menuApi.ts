@@ -33,6 +33,8 @@ export async function fetchMenu(token: string): Promise<MenuResponse> {
 
   const url = `${baseUrl.replace(/\/$/, "")}?token=${encodeURIComponent(token)}`;
 
+  console.log("Fetching menu from:", url);
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), MENU_FETCH_TIMEOUT_MS);
 
@@ -49,7 +51,11 @@ export async function fetchMenu(token: string): Promise<MenuResponse> {
     });
     clearTimeout(timeoutId);
 
+    console.log("Response status:", res.status);
+
     const data = await res.json().catch(() => ({}));
+
+    console.log("Response body:", data);
 
     if (!res.ok) {
       const code = (data as MenuApiError).error as MenuApiErrorCode | undefined;
@@ -60,6 +66,7 @@ export async function fetchMenu(token: string): Promise<MenuResponse> {
     return data as MenuResponse;
   } catch (err) {
     clearTimeout(timeoutId);
+    console.error("Menu fetch error:", err);
     if (err instanceof MenuApiErrorClass) throw err;
     if (err instanceof Error) {
       if (err.name === "AbortError") {
