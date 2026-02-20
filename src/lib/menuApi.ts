@@ -12,15 +12,23 @@ function safeTokenLog(token: string): string {
 }
 
 /**
- * Obtiene el menú desde el backend (Edge Function).
+ * Obtiene el menú desde el backend (Supabase Edge Function public-menu).
  * GET ${NEXT_PUBLIC_MENU_API_URL}?token=${token}
  * - Timeout 10s.
  * - Caching con revalidate 30s (cuando se usa desde Server Component con fetch de Next).
+ * - Envía Authorization y apikey con SUPABASE_ANON_KEY (solo servidor).
  */
 export async function fetchMenu(token: string): Promise<MenuResponse> {
   const baseUrl = process.env.NEXT_PUBLIC_MENU_API_URL;
+  const anonKey = process.env.SUPABASE_ANON_KEY;
+
   if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_MENU_API_URL is not set");
+    throw new MenuApiErrorClass("server_error", 500);
+  }
+  if (!anonKey) {
+    const err = new MenuApiErrorClass("server_error", 500);
+    err.message = "SUPABASE_ANON_KEY is not set";
+    throw err;
   }
 
   const url = `${baseUrl.replace(/\/$/, "")}?token=${encodeURIComponent(token)}`;
@@ -32,7 +40,11 @@ export async function fetchMenu(token: string): Promise<MenuResponse> {
     const res = await fetch(url, {
       method: "GET",
       signal: controller.signal,
-      headers: { Accept: "application/json" },
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${anonKey}`,
+        apikey: anonKey,
+      },
       next: { revalidate: 30 },
     });
     clearTimeout(timeoutId);

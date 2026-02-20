@@ -17,12 +17,13 @@ Abre [http://localhost:3000](http://localhost:3000).
 
 | Variable | Descripción |
 |----------|-------------|
-| `NEXT_PUBLIC_MENU_API_URL` | **Requerida.** URL base del endpoint del menú (ej. Supabase Edge Function). |
+| `NEXT_PUBLIC_MENU_API_URL` | **Requerida.** URL base del endpoint del menú (ej. `https://<project>.supabase.co/functions/v1/public-menu`). |
+| `SUPABASE_ANON_KEY` | **Requerida (solo servidor).** Clave anónima de Supabase para `Authorization` y `apikey` al llamar a la Edge Function. No usar prefijo `NEXT_PUBLIC`. |
 | `NEXT_PUBLIC_APP_DEEPLINK_SCHEME` | Esquema del deep link (default: `cellarium`). |
 | `NEXT_PUBLIC_IOS_STORE_URL` | Enlace a App Store (placeholder: `https://apps.apple.com/`). |
 | `NEXT_PUBLIC_ANDROID_STORE_URL` | Enlace a Play Store (placeholder: `https://play.google.com/store`). |
 
-Ver `.env.local.example` para el template.
+Ver `.env.local.example` para el template. **En Vercel:** configura `SUPABASE_ANON_KEY` en las variables de entorno del proyecto (solo servidor; no se expone al cliente).
 
 ## URLs de la app
 
