@@ -164,11 +164,11 @@ export function MenuView({ data, encodedData }: MenuViewProps) {
                       <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                         {sectionLabel} · {wines.length}
                       </h2>
-                      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory -mx-4 px-4">
+                      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scroll-pl-4 -mx-4 px-4">
                         {wines.map((wine) => (
                           <div
                             key={wine.id}
-                            className="min-w-[300px] shrink-0 snap-start"
+                            className="min-w-[88%] sm:min-w-[420px] shrink-0 snap-start"
                           >
                             <WineCard wine={wine} />
                           </div>

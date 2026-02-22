@@ -14,6 +14,8 @@ export type TranslationKeys = {
   "wine.bottle": string;
   "wine.showProfile": string;
   "wine.hideProfile": string;
+  "wine.showMore": string;
+  "wine.showLess": string;
   "wine.body": string;
   "wine.acidity": string;
   "wine.sweetness": string;
@@ -43,6 +45,8 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.bottle": "Botella",
     "wine.showProfile": "Ver perfil completo",
     "wine.hideProfile": "Ocultar perfil",
+    "wine.showMore": "Ver más",
+    "wine.showLess": "Ver menos",
     "wine.body": "Cuerpo",
     "wine.acidity": "Acidez",
     "wine.sweetness": "Dulzor",
@@ -70,6 +74,8 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.bottle": "Bottle",
     "wine.showProfile": "View full profile",
     "wine.hideProfile": "Hide profile",
+    "wine.showMore": "Show more",
+    "wine.showLess": "Show less",
     "wine.body": "Body",
     "wine.acidity": "Acidity",
     "wine.sweetness": "Sweetness",

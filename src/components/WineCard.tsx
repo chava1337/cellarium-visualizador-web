@@ -8,8 +8,21 @@ interface WineCardProps {
   wine: Wine;
 }
 
-const toText = (v: unknown): string =>
-  typeof v === "string" ? v : (v as { name?: string; es?: string; en?: string })?.name ?? (v as { name?: string; es?: string; en?: string })?.es ?? (v as { name?: string; es?: string; en?: string })?.en ?? (v != null ? String(v) : "");
+/** Normaliza cualquier valor a string; nunca devuelve "[object Object]". */
+function toText(v: unknown): string {
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  if (typeof v !== "object") return String(v);
+  const o = v as Record<string, unknown>;
+  const out =
+    (typeof o.name === "string" ? o.name : undefined) ??
+    (typeof o.label === "string" ? o.label : undefined) ??
+    (typeof o.es === "string" ? o.es : undefined) ??
+    (typeof o.en === "string" ? o.en : undefined);
+  if (typeof out === "string") return out;
+  const fallback = String(v);
+  return fallback === "[object Object]" ? "" : fallback;
+}
 
 function formatPrice(value: number | null): string {
   if (value == null) return "—";
@@ -47,10 +60,13 @@ function SensoryBar({
   );
 }
 
+const DESCRIPTION_TRUNCATE_LENGTH = 120;
+
 export function WineCard({ wine }: WineCardProps) {
   const { t } = useLocale();
   const [imgError, setImgError] = useState(false);
-  const [showMore, setShowMore] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
   const showImg = !!toText(wine.image_url) && !imgError;
 
   const stockStatus = formatStock(wine.stock_quantity);
@@ -72,6 +88,10 @@ export function WineCard({ wine }: WineCardProps) {
   const hasExtraSensory =
     wine.intensity_level != null || wine.fizziness_level != null;
   const hasSensory = hasPrimarySensory || hasExtraSensory;
+
+  const hasLongDescription =
+    description.length > DESCRIPTION_TRUNCATE_LENGTH;
+  const canExpand = hasLongDescription || hasExtraSensory;
 
   return (
     <article
@@ -125,7 +145,11 @@ export function WineCard({ wine }: WineCardProps) {
         )}
 
         {description && (
-          <p className="line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
+          <p
+            className={`text-sm text-gray-600 dark:text-gray-400 transition-[max-height] duration-200 ${
+              expanded ? "" : "line-clamp-2"
+            }`}
+          >
             {description}
           </p>
         )}
@@ -149,7 +173,7 @@ export function WineCard({ wine }: WineCardProps) {
 
         {/* Barras sensoriales: 3 por defecto, resto al expandir */}
         {hasSensory && (
-          <div className="mt-2 flex flex-col gap-1">
+          <div className="mt-2 flex flex-col gap-1 transition-[opacity] duration-200">
             {wine.body_level != null && (
               <SensoryBar label={t("wine.body")} value={wine.body_level} />
             )}
@@ -159,22 +183,22 @@ export function WineCard({ wine }: WineCardProps) {
             {wine.sweetness_level != null && (
               <SensoryBar label={t("wine.sweetness")} value={wine.sweetness_level} />
             )}
-            {showMore && wine.intensity_level != null && (
+            {expanded && wine.intensity_level != null && (
               <SensoryBar label={t("wine.intensity")} value={wine.intensity_level} />
             )}
-            {showMore && wine.fizziness_level != null && (
+            {expanded && wine.fizziness_level != null && (
               <SensoryBar label={t("wine.fizziness")} value={wine.fizziness_level} />
             )}
-            {hasExtraSensory && (
-              <button
-                type="button"
-                onClick={() => setShowMore((v) => !v)}
-                className="mt-1 self-start text-xs text-wine-600 hover:underline dark:text-wine-400"
-              >
-                {showMore ? t("wine.hideProfile") : t("wine.showProfile")}
-              </button>
-            )}
           </div>
+        )}
+        {canExpand && (
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="mt-1 self-start text-xs text-wine-600 hover:underline dark:text-wine-400"
+          >
+            {expanded ? t("wine.showLess") : t("wine.showMore")}
+          </button>
         )}
       </div>
     </article>
