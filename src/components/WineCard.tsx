@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Wine } from "@/src/types/menu";
+import { useLocale } from "@/src/i18n/LocaleContext";
 
 interface WineCardProps {
   wine: Wine;
@@ -12,9 +13,10 @@ const toText = (v: unknown): string =>
 
 function formatPrice(value: number | null): string {
   if (value == null) return "—";
-  return new Intl.NumberFormat("es-ES", {
+  return new Intl.NumberFormat("es-MX", {
     style: "currency",
-    currency: "EUR",
+    currency: "MXN",
+    maximumFractionDigits: 2,
   }).format(value);
 }
 
@@ -46,6 +48,7 @@ function SensoryBar({
 }
 
 export function WineCard({ wine }: WineCardProps) {
+  const { t } = useLocale();
   const [imgError, setImgError] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const showImg = !!toText(wine.image_url) && !imgError;
@@ -107,7 +110,7 @@ export function WineCard({ wine }: WineCardProps) {
                 : "bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-400"
             }`}
           >
-            {stockStatus === "available" ? "Disponible" : "Agotado"}
+            {stockStatus === "available" ? t("wine.available") : t("wine.soldOut")}
           </span>
         </div>
 
@@ -131,12 +134,12 @@ export function WineCard({ wine }: WineCardProps) {
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-sm">
           {wine.price_by_glass != null && (
             <span className="font-medium text-gray-800 dark:text-gray-200">
-              Copa: {formatPrice(wine.price_by_glass)}
+              {t("wine.glass")}: {formatPrice(wine.price_by_glass)}
             </span>
           )}
           {wine.price_by_bottle != null && (
             <span className="font-medium text-gray-800 dark:text-gray-200">
-              Botella: {formatPrice(wine.price_by_bottle)}
+              {t("wine.bottle")}: {formatPrice(wine.price_by_bottle)}
             </span>
           )}
           {wine.price_by_glass == null && wine.price_by_bottle == null && (
@@ -148,19 +151,19 @@ export function WineCard({ wine }: WineCardProps) {
         {hasSensory && (
           <div className="mt-2 flex flex-col gap-1">
             {wine.body_level != null && (
-              <SensoryBar label="Cuerpo" value={wine.body_level} />
+              <SensoryBar label={t("wine.body")} value={wine.body_level} />
             )}
             {wine.acidity_level != null && (
-              <SensoryBar label="Acidez" value={wine.acidity_level} />
+              <SensoryBar label={t("wine.acidity")} value={wine.acidity_level} />
             )}
             {wine.sweetness_level != null && (
-              <SensoryBar label="Dulzor" value={wine.sweetness_level} />
+              <SensoryBar label={t("wine.sweetness")} value={wine.sweetness_level} />
             )}
             {showMore && wine.intensity_level != null && (
-              <SensoryBar label="Aroma" value={wine.intensity_level} />
+              <SensoryBar label={t("wine.intensity")} value={wine.intensity_level} />
             )}
             {showMore && wine.fizziness_level != null && (
-              <SensoryBar label="Burbujas" value={wine.fizziness_level} />
+              <SensoryBar label={t("wine.fizziness")} value={wine.fizziness_level} />
             )}
             {hasExtraSensory && (
               <button
@@ -168,7 +171,7 @@ export function WineCard({ wine }: WineCardProps) {
                 onClick={() => setShowMore((v) => !v)}
                 className="mt-1 self-start text-xs text-wine-600 hover:underline dark:text-wine-400"
               >
-                {showMore ? "Ocultar perfil" : "Ver perfil completo"}
+                {showMore ? t("wine.hideProfile") : t("wine.showProfile")}
               </button>
             )}
           </div>
