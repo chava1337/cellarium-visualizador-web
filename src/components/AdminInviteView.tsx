@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale } from "@/src/i18n/LocaleContext";
+import { LocaleToggle } from "@/src/components/LocaleToggle";
 
 const DEFAULT_IOS = "https://apps.apple.com/";
 const DEFAULT_ANDROID = "https://play.google.com/store";
@@ -24,7 +25,11 @@ export function AdminInviteView({ branchName, encodedData }: AdminInviteViewProp
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900">
+    <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
+      <header className="sticky top-0 z-10 flex justify-end border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
+        <LocaleToggle />
+      </header>
+      <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-wine-100 text-wine-600 dark:bg-wine-900/40 dark:text-wine-400">
           <svg
@@ -71,7 +76,7 @@ export function AdminInviteView({ branchName, encodedData }: AdminInviteViewProp
               rel="noopener noreferrer"
               className="text-sm font-medium text-wine-600 hover:underline dark:text-wine-400"
             >
-              App Store
+              {t("admin.appStore")}
             </a>
             <a
               href={androidUrl}
@@ -79,10 +84,11 @@ export function AdminInviteView({ branchName, encodedData }: AdminInviteViewProp
               rel="noopener noreferrer"
               className="text-sm font-medium text-wine-600 hover:underline dark:text-wine-400"
             >
-              Play Store
+              {t("admin.playStore")}
             </a>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -33,6 +33,8 @@ export type TranslationKeys = {
   "admin.message": string;
   "admin.openInApp": string;
   "admin.storeHint": string;
+  "admin.appStore": string;
+  "admin.playStore": string;
 };
 
 export const translations: Record<Locale, TranslationKeys> = {
@@ -69,6 +71,8 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.message": "Abre el enlace en la app de Cellarium para gestionar esta sucursal.",
     "admin.openInApp": "Abrir en la app",
     "admin.storeHint": "Si no se abre, descarga la app:",
+    "admin.appStore": "App Store",
+    "admin.playStore": "Play Store",
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
@@ -103,5 +107,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.message": "Open this link in the Cellarium app to manage this branch.",
     "admin.openInApp": "Open in app",
     "admin.storeHint": "If it doesn't open, download the app:",
+    "admin.appStore": "App Store",
+    "admin.playStore": "Play Store",
   },
 };
