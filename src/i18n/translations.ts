@@ -28,6 +28,11 @@ export type TranslationKeys = {
   "section.rose": string;
   "section.sparkling": string;
   "section.other": string;
+  "admin.title": string;
+  "admin.branchLabel": string;
+  "admin.message": string;
+  "admin.openInApp": string;
+  "admin.storeHint": string;
 };
 
 export const translations: Record<Locale, TranslationKeys> = {
@@ -59,6 +64,11 @@ export const translations: Record<Locale, TranslationKeys> = {
     "section.rose": "Rosados",
     "section.sparkling": "Espumosos",
     "section.other": "Otros",
+    "admin.title": "Invitación de personal",
+    "admin.branchLabel": "Sucursal",
+    "admin.message": "Abre el enlace en la app de Cellarium para gestionar esta sucursal.",
+    "admin.openInApp": "Abrir en la app",
+    "admin.storeHint": "Si no se abre, descarga la app:",
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
@@ -88,5 +98,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "section.rose": "Rosés",
     "section.sparkling": "Sparkling",
     "section.other": "Other",
+    "admin.title": "Staff invite",
+    "admin.branchLabel": "Branch",
+    "admin.message": "Open this link in the Cellarium app to manage this branch.",
+    "admin.openInApp": "Open in app",
+    "admin.storeHint": "If it doesn't open, download the app:",
   },
 };

@@ -1,39 +1,15 @@
-import type { QrDataPayload } from "@/src/types/menu";
+import { decodeQrData } from "@/src/lib/qrData";
 import { fetchMenu, MenuApiErrorClass } from "@/src/lib/menuApi";
 import { MenuView } from "@/src/components/MenuView";
 import { ErrorState } from "@/src/components/ErrorState";
+import { AdminInviteView } from "@/src/components/AdminInviteView";
 import type { MenuApiErrorCode } from "@/src/types/menu";
 
 const GUEST_TYPE = "guest";
+const ADMIN_TYPES = ["admin", "admin_invite"];
 
-function parseQrData(dataParam: string | undefined): {
-  token: string;
-  encodedData: string;
-} | { error: MenuApiErrorCode } {
-  if (!dataParam || typeof dataParam !== "string") {
-    return { error: "invalid_qr" };
-  }
-
-  let payload: unknown;
-  try {
-    payload = JSON.parse(decodeURIComponent(dataParam)) as unknown;
-  } catch {
-    return { error: "invalid_qr" };
-  }
-
-  if (!payload || typeof payload !== "object" || !("token" in payload)) {
-    return { error: "invalid_qr" };
-  }
-
-  const { type, token } = payload as QrDataPayload;
-  if (type !== GUEST_TYPE) {
-    return { error: "invalid_qr" };
-  }
-  if (typeof token !== "string" || !token.trim()) {
-    return { error: "invalid_qr" };
-  }
-
-  return { token: token.trim(), encodedData: dataParam };
+function isAdminType(type: string): boolean {
+  return ADMIN_TYPES.includes(type);
 }
 
 type PageProps = {
@@ -48,17 +24,32 @@ export default async function QrPage({ searchParams }: PageProps) {
         ? searchParams.data[0]
         : undefined;
 
-  const parsed = parseQrData(dataParam);
+  const result = decodeQrData(dataParam);
 
-  if ("error" in parsed) {
+  if (!result.ok) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <ErrorState code={parsed.error} />
+        <ErrorState code={result.error} />
       </div>
     );
   }
 
-  const { token, encodedData } = parsed;
+  const { payload } = result;
+  const { type, token, encodedData, branchName } = payload;
+
+  if (isAdminType(type)) {
+    return (
+      <AdminInviteView branchName={branchName} encodedData={encodedData} />
+    );
+  }
+
+  if (type !== GUEST_TYPE) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <ErrorState code="invalid_qr" />
+      </div>
+    );
+  }
 
   try {
     const menuData = await fetchMenu(token);
