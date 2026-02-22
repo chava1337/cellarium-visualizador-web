@@ -6,6 +6,7 @@ import { TopBar } from "@/src/components/TopBar";
 import { WineCard } from "@/src/components/WineCard";
 import { useLocale } from "@/src/i18n/LocaleContext";
 import type { TranslationKeys } from "@/src/i18n/translations";
+import { safeText, safeJoin } from "@/src/lib/text";
 
 const TYPE_ORDER: Record<string, number> = {
   red: 0,
@@ -34,16 +35,10 @@ const FILTER_KEYS: { key: FilterKey; labelKey: keyof TranslationKeys }[] = [
   { key: "bottle", labelKey: "filters.bottle" },
 ];
 
-function toText(v: unknown): string {
-  if (typeof v === "string") return v;
-  const o = v as { name?: string; es?: string; en?: string };
-  return o?.name ?? o?.es ?? o?.en ?? (v != null ? String(v) : "");
-}
-
 function groupWinesByType(wines: Wine[]): Map<string, Wine[]> {
   const map = new Map<string, Wine[]>();
   for (const wine of wines) {
-    const key = toText(wine.type).toLowerCase() || "other";
+    const key = safeText(wine.type).toLowerCase() || "other";
     const list = map.get(key) ?? [];
     list.push(wine);
     map.set(key, list);
@@ -61,12 +56,12 @@ function matchesSearch(wine: Wine, q: string): boolean {
   if (!q.trim()) return true;
   const lower = q.trim().toLowerCase();
   const fields = [
-    toText(wine.name),
-    toText(wine.winery),
-    toText(wine.grape_variety),
-    toText(wine.region),
-    toText(wine.country),
-    toText(wine.vintage),
+    safeText(wine.name),
+    safeText(wine.winery),
+    safeText(wine.grape_variety),
+    safeText(wine.region),
+    safeText(wine.country),
+    safeText(wine.vintage),
   ];
   return fields.some((f) => f.toLowerCase().includes(lower));
 }
@@ -75,7 +70,7 @@ function matchesFilter(wine: Wine, filter: FilterKey): boolean {
   if (filter === "all") return true;
   if (filter === "glass") return wine.price_by_glass != null;
   if (filter === "bottle") return wine.price_by_bottle != null;
-  const typeLower = toText(wine.type).toLowerCase();
+  const typeLower = safeText(wine.type).toLowerCase();
   if (filter === "red") return typeLower === "red";
   if (filter === "white") return typeLower === "white";
   if (filter === "sparkling") return typeLower === "sparkling";

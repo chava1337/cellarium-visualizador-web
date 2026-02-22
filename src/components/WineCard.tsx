@@ -3,25 +3,10 @@
 import { useState } from "react";
 import type { Wine } from "@/src/types/menu";
 import { useLocale } from "@/src/i18n/LocaleContext";
+import { safeText, safeJoin } from "@/src/lib/text";
 
 interface WineCardProps {
   wine: Wine;
-}
-
-/** Normaliza cualquier valor a string; nunca devuelve "[object Object]". */
-function toText(v: unknown): string {
-  if (v == null) return "";
-  if (typeof v === "string") return v;
-  if (typeof v !== "object") return String(v);
-  const o = v as Record<string, unknown>;
-  const out =
-    (typeof o.name === "string" ? o.name : undefined) ??
-    (typeof o.label === "string" ? o.label : undefined) ??
-    (typeof o.es === "string" ? o.es : undefined) ??
-    (typeof o.en === "string" ? o.en : undefined);
-  if (typeof out === "string") return out;
-  const fallback = String(v);
-  return fallback === "[object Object]" ? "" : fallback;
 }
 
 function formatPrice(value: number | null): string {
@@ -46,7 +31,7 @@ function SensoryBar({
 }) {
   const pct = Math.min(5, Math.max(0, value)) * 20;
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 min-w-0">
       <span className="w-16 shrink-0 text-xs text-gray-500 dark:text-gray-400">
         {label}
       </span>
@@ -67,19 +52,15 @@ export function WineCard({ wine }: WineCardProps) {
   const [imgError, setImgError] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const showImg = !!toText(wine.image_url) && !imgError;
+  const imageUrl = safeText(wine.image_url);
+  const showImg = !!imageUrl && !imgError;
 
   const stockStatus = formatStock(wine.stock_quantity);
-  const regionCountry = [toText(wine.region), toText(wine.country)]
-    .filter(Boolean)
-    .join(", ");
-  const wineryLine = [toText(wine.winery), regionCountry]
-    .filter(Boolean)
-    .join(" · ");
-  const metaLine = [toText(wine.vintage), toText(wine.grape_variety)]
-    .filter(Boolean)
-    .join(" · ");
-  const description = toText(wine.description);
+  const winery = safeText(wine.winery);
+  const regionCountry = safeJoin([wine.region, wine.country], ", ");
+  const metaLine = safeJoin([wine.vintage, wine.grape_variety], " · ");
+  const description = safeText(wine.description);
+  const name = safeText(wine.name);
 
   const hasPrimarySensory =
     wine.body_level != null ||
@@ -95,14 +76,14 @@ export function WineCard({ wine }: WineCardProps) {
 
   return (
     <article
-      className="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+      className="flex gap-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800 overflow-hidden"
       data-wine-id={wine.id}
     >
       {/* Columna izquierda: imagen o placeholder */}
       <div className="shrink-0">
         {showImg ? (
           <img
-            src={toText(wine.image_url)}
+            src={imageUrl}
             alt=""
             className="h-[140px] w-[84px] rounded-lg border border-gray-100 object-contain shadow-sm dark:border-gray-600"
             onError={() => setImgError(true)}
@@ -118,10 +99,10 @@ export function WineCard({ wine }: WineCardProps) {
       </div>
 
       {/* Columna derecha: textos y precios */}
-      <div className="min-w-0 flex-1 flex flex-col gap-1.5">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white">
-            {toText(wine.name)}
+      <div className="min-w-0 flex-1 flex flex-col gap-1.5 overflow-hidden">
+        <div className="flex items-start justify-between gap-2 min-w-0">
+          <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white min-w-0 truncate">
+            {name}
           </h3>
           <span
             className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
@@ -134,28 +115,36 @@ export function WineCard({ wine }: WineCardProps) {
           </span>
         </div>
 
-        {wineryLine && (
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {wineryLine}
+        {winery ? (
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1 min-w-0">
+            {winery}
           </p>
-        )}
+        ) : null}
 
-        {metaLine && (
-          <p className="text-xs text-gray-500 dark:text-gray-500">{metaLine}</p>
-        )}
+        {regionCountry ? (
+          <p className="text-sm text-gray-600 dark:text-gray-400 leading-snug break-words min-w-0">
+            {regionCountry}
+          </p>
+        ) : null}
 
-        {description && (
+        {metaLine ? (
+          <p className="text-xs text-gray-500 dark:text-gray-500 min-w-0 break-words">
+            {metaLine}
+          </p>
+        ) : null}
+
+        {description ? (
           <p
-            className={`text-sm text-gray-600 dark:text-gray-400 transition-[max-height] duration-200 ${
+            className={`text-sm text-gray-600 dark:text-gray-400 transition-[max-height] duration-200 min-w-0 break-words ${
               expanded ? "" : "line-clamp-2"
             }`}
           >
             {description}
           </p>
-        )}
+        ) : null}
 
         {/* Precios destacados */}
-        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-sm">
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-sm min-w-0">
           {wine.price_by_glass != null && (
             <span className="font-medium text-gray-800 dark:text-gray-200">
               {t("wine.glass")}: {formatPrice(wine.price_by_glass)}
@@ -173,7 +162,7 @@ export function WineCard({ wine }: WineCardProps) {
 
         {/* Barras sensoriales: 3 por defecto, resto al expandir */}
         {hasSensory && (
-          <div className="mt-2 flex flex-col gap-1 transition-[opacity] duration-200">
+          <div className="mt-2 flex flex-col gap-1 transition-[opacity] duration-200 min-w-0">
             {wine.body_level != null && (
               <SensoryBar label={t("wine.body")} value={wine.body_level} />
             )}
