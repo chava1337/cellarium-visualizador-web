@@ -44,6 +44,7 @@ export type TranslationKeys = {
   "adminInvite.signup": string;
   "adminInvite.signin": string;
   "adminInvite.submit": string;
+  "adminInvite.sending": string;
   "adminInvite.sendRequest": string;
   "adminInvite.requestSentTitle": string;
   "adminInvite.requestSentBody": string;
@@ -53,7 +54,10 @@ export type TranslationKeys = {
   "adminInvite.errors.token_max_uses_reached": string;
   "adminInvite.errors.branch_not_found": string;
   "adminInvite.errors.not_authenticated": string;
+  "adminInvite.errors.already_registered": string;
   "adminInvite.errors.generic": string;
+  "adminInvite.confirmEmailTitle": string;
+  "adminInvite.confirmEmailBody": string;
 };
 
 export const translations: Record<Locale, TranslationKeys> = {
@@ -93,7 +97,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.appStore": "App Store",
     "admin.playStore": "Play Store",
     "adminInvite.registerTitle": "Unirse como personal",
-    "adminInvite.subtitle": "Crea una cuenta o inicia sesión para enviar tu solicitud.",
+    "adminInvite.subtitle": "Crea una cuenta para enviar tu solicitud de acceso.",
     "adminInvite.nameLabel": "Nombre",
     "adminInvite.usernameLabel": "Usuario (opcional)",
     "adminInvite.emailLabel": "Correo electrónico",
@@ -101,6 +105,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.signup": "Crear cuenta",
     "adminInvite.signin": "Iniciar sesión",
     "adminInvite.submit": "Continuar",
+    "adminInvite.sending": "Enviando…",
     "adminInvite.sendRequest": "Enviar solicitud",
     "adminInvite.requestSentTitle": "Solicitud enviada",
     "adminInvite.requestSentBody": "Un administrador revisará tu solicitud en la app y te asignará acceso.",
@@ -110,7 +115,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.token_max_uses_reached": "Este código alcanzó su límite de usos.",
     "adminInvite.errors.branch_not_found": "Sucursal no encontrada.",
     "adminInvite.errors.not_authenticated": "Debes iniciar sesión para enviar la solicitud.",
+    "adminInvite.errors.already_registered": "Este correo ya tiene cuenta. Cuando un administrador apruebe tu solicitud, usa la app para entrar.",
     "adminInvite.errors.generic": "Ha ocurrido un error. Inténtalo de nuevo.",
+    "adminInvite.confirmEmailTitle": "Cuenta creada",
+    "adminInvite.confirmEmailBody": "Confirma tu correo y vuelve a abrir este enlace del QR para enviar la solicitud.",
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
@@ -148,7 +156,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.appStore": "App Store",
     "admin.playStore": "Play Store",
     "adminInvite.registerTitle": "Join as staff",
-    "adminInvite.subtitle": "Create an account or sign in to submit your request.",
+    "adminInvite.subtitle": "Create an account to submit your access request.",
     "adminInvite.nameLabel": "Name",
     "adminInvite.usernameLabel": "Username (optional)",
     "adminInvite.emailLabel": "Email",
@@ -156,6 +164,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.signup": "Create account",
     "adminInvite.signin": "Sign in",
     "adminInvite.submit": "Continue",
+    "adminInvite.sending": "Sending…",
     "adminInvite.sendRequest": "Send request",
     "adminInvite.requestSentTitle": "Request sent",
     "adminInvite.requestSentBody": "An administrator will review your request in the app and grant you access.",
@@ -165,6 +174,9 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.token_max_uses_reached": "This code has reached its usage limit.",
     "adminInvite.errors.branch_not_found": "Branch not found.",
     "adminInvite.errors.not_authenticated": "You must sign in to send the request.",
+    "adminInvite.errors.already_registered": "This email already has an account. Once an administrator approves your request, use the app to sign in.",
     "adminInvite.errors.generic": "Something went wrong. Please try again.",
+    "adminInvite.confirmEmailTitle": "Account created",
+    "adminInvite.confirmEmailBody": "Confirm your email and open this QR link again to send the request.",
   },
 };
