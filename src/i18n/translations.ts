@@ -42,6 +42,7 @@ export type TranslationKeys = {
   "adminInvite.emailLabel": string;
   "adminInvite.confirmEmailLabel": string;
   "adminInvite.passwordLabel": string;
+  "adminInvite.confirmPasswordLabel": string;
   "adminInvite.signup": string;
   "adminInvite.signin": string;
   "adminInvite.submit": string;
@@ -61,6 +62,7 @@ export type TranslationKeys = {
   "adminInvite.errors.no_session_after_signup": string;
   "adminInvite.errors.already_registered": string;
   "adminInvite.errors.email_mismatch": string;
+  "adminInvite.errors.password_mismatch": string;
   "adminInvite.errors.too_many_pending": string;
   "adminInvite.errors.generic": string;
   "adminInvite.confirmEmailTitle": string;
@@ -110,6 +112,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.emailLabel": "Correo electrónico",
     "adminInvite.confirmEmailLabel": "Confirmar correo",
     "adminInvite.passwordLabel": "Contraseña",
+    "adminInvite.confirmPasswordLabel": "Confirmar contraseña",
     "adminInvite.signup": "Crear cuenta",
     "adminInvite.signin": "Iniciar sesión",
     "adminInvite.submit": "Continuar",
@@ -129,6 +132,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.no_session_after_signup": "No se pudo iniciar sesión tras crear la cuenta. Inténtalo de nuevo.",
     "adminInvite.errors.already_registered": "Este correo ya tiene cuenta. Cuando un administrador apruebe tu solicitud, usa la app para entrar.",
     "adminInvite.errors.email_mismatch": "Los correos no coinciden.",
+    "adminInvite.errors.password_mismatch": "Las contraseñas no coinciden.",
     "adminInvite.errors.too_many_pending": "Hay demasiadas solicitudes pendientes para esta sucursal. Espera a que se aprueben o rechacen.",
     "adminInvite.errors.generic": "Ha ocurrido un error. Inténtalo de nuevo.",
     "adminInvite.confirmEmailTitle": "Cuenta creada",
@@ -176,6 +180,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.emailLabel": "Email",
     "adminInvite.confirmEmailLabel": "Confirm email",
     "adminInvite.passwordLabel": "Password",
+    "adminInvite.confirmPasswordLabel": "Confirm password",
     "adminInvite.signup": "Create account",
     "adminInvite.signin": "Sign in",
     "adminInvite.submit": "Continue",
@@ -195,6 +200,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.no_session_after_signup": "Could not sign in after creating the account. Please try again.",
     "adminInvite.errors.already_registered": "This email already has an account. Once an administrator approves your request, use the app to sign in.",
     "adminInvite.errors.email_mismatch": "Emails do not match.",
+    "adminInvite.errors.password_mismatch": "Passwords do not match.",
     "adminInvite.errors.too_many_pending": "Too many pending requests for this branch. Wait for some to be approved or rejected.",
     "adminInvite.errors.generic": "Something went wrong. Please try again.",
     "adminInvite.confirmEmailTitle": "Account created",

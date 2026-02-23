@@ -45,11 +45,11 @@ export function AdminInviteView({
   const androidUrl = process.env.NEXT_PUBLIC_ANDROID_STORE_URL || DEFAULT_ANDROID;
   const deepLink = `${scheme}://qr/${rawDataParam ?? encodedData}`;
 
-  const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestSent, setRequestSent] = useState(false);
@@ -69,13 +69,8 @@ export function AdminInviteView({
       setErrorMessage(null);
       setDebugRpc(null);
 
-      const nameTrim = name.trim();
       const emailTrim = email.trim();
       const emailConfirmTrim = emailConfirm.trim();
-      if (!nameTrim) {
-        setErrorMessage(t("adminInvite.errors.generic"));
-        return;
-      }
       if (!emailTrim) {
         setErrorMessage(t("adminInvite.errors.generic"));
         return;
@@ -88,6 +83,10 @@ export function AdminInviteView({
         setErrorMessage(t("adminInvite.errors.generic"));
         return;
       }
+      if (password !== passwordConfirm) {
+        setErrorMessage(t("adminInvite.errors.password_mismatch"));
+        return;
+      }
 
       setLoading(true);
       try {
@@ -96,8 +95,7 @@ export function AdminInviteView({
           password,
           options: {
             data: {
-              name: nameTrim,
-              ...(username.trim() ? { username: username.trim() } : {}),
+              username: username.trim() || undefined,
             },
           },
         });
@@ -127,7 +125,7 @@ export function AdminInviteView({
 
         const { data: rpcData, error: rpcError } = await supabase.rpc("request_staff_access", {
           p_qr_token: token,
-          p_name: nameTrim,
+          p_name: null,
           p_username: username.trim() || null,
         });
 
@@ -161,7 +159,7 @@ export function AdminInviteView({
         setLoading(false);
       }
     },
-    [token, name, username, email, emailConfirm, password, t, mapRpcError]
+    [token, username, email, emailConfirm, password, passwordConfirm, t, mapRpcError]
   );
 
   const openInApp = () => {
@@ -225,18 +223,6 @@ export function AdminInviteView({
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div>
-              <label className={labelClass}>{t("adminInvite.nameLabel")}</label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={loading || requestSent}
-                className={inputClass}
-                placeholder={t("adminInvite.nameLabel")}
-              />
-            </div>
-            <div>
               <label className={labelClass}>{t("adminInvite.usernameLabel")}</label>
               <input
                 type="text"
@@ -282,6 +268,19 @@ export function AdminInviteView({
                 disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.passwordLabel")}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>{t("adminInvite.confirmPasswordLabel")}</label>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                disabled={loading || requestSent}
+                className={inputClass}
+                placeholder={t("adminInvite.confirmPasswordLabel")}
               />
             </div>
             <button
