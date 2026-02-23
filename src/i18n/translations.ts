@@ -53,7 +53,9 @@ export type TranslationKeys = {
   "adminInvite.errors.invalid_token": string;
   "adminInvite.errors.token_expired": string;
   "adminInvite.errors.token_used": string;
+  "adminInvite.errors.token_used_staff": string;
   "adminInvite.errors.token_max_uses_reached": string;
+  "adminInvite.errors.token_max_uses_reached_staff": string;
   "adminInvite.errors.branch_not_found": string;
   "adminInvite.errors.not_authenticated": string;
   "adminInvite.errors.no_session_after_signup": string;
@@ -119,7 +121,9 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.invalid_token": "Código de invitación no válido.",
     "adminInvite.errors.token_expired": "El código de invitación ha expirado.",
     "adminInvite.errors.token_used": "Este código de invitación ya fue utilizado.",
+    "adminInvite.errors.token_used_staff": "Este código ya fue utilizado. Pide al gerente u owner que genere uno nuevo.",
     "adminInvite.errors.token_max_uses_reached": "Este código alcanzó su límite de usos.",
+    "adminInvite.errors.token_max_uses_reached_staff": "Este código ya alcanzó su límite de uso. Pide al gerente u owner que genere uno nuevo.",
     "adminInvite.errors.branch_not_found": "Sucursal no encontrada.",
     "adminInvite.errors.not_authenticated": "Debes iniciar sesión para enviar la solicitud.",
     "adminInvite.errors.no_session_after_signup": "No se pudo iniciar sesión tras crear la cuenta. Inténtalo de nuevo.",
@@ -183,7 +187,9 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.invalid_token": "Invalid invitation code.",
     "adminInvite.errors.token_expired": "This invitation code has expired.",
     "adminInvite.errors.token_used": "This invitation code has already been used.",
+    "adminInvite.errors.token_used_staff": "This code has already been used. Ask the manager/owner to generate a new one.",
     "adminInvite.errors.token_max_uses_reached": "This code has reached its usage limit.",
+    "adminInvite.errors.token_max_uses_reached_staff": "This code has reached its usage limit. Ask the manager/owner to generate a new one.",
     "adminInvite.errors.branch_not_found": "Branch not found.",
     "adminInvite.errors.not_authenticated": "You must sign in to send the request.",
     "adminInvite.errors.no_session_after_signup": "Could not sign in after creating the account. Please try again.",

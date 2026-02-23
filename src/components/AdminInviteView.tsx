@@ -12,8 +12,8 @@ const DEFAULT_ANDROID = "https://play.google.com/store";
 const RPC_ERROR_KEYS: Record<string, string> = {
   invalid_token: "adminInvite.errors.invalid_token",
   token_expired: "adminInvite.errors.token_expired",
-  token_used: "adminInvite.errors.token_used",
-  token_max_uses_reached: "adminInvite.errors.token_max_uses_reached",
+  token_used: "adminInvite.errors.token_used_staff",
+  token_max_uses_reached: "adminInvite.errors.token_max_uses_reached_staff",
   branch_not_found: "adminInvite.errors.branch_not_found",
   not_authenticated: "adminInvite.errors.not_authenticated",
   too_many_pending: "adminInvite.errors.too_many_pending",
