@@ -53,7 +53,6 @@ export function AdminInviteView({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestSent, setRequestSent] = useState(false);
-  const [showConfirmEmailScreen, setShowConfirmEmailScreen] = useState(false);
 
   const mapRpcError = useCallback(
     (errorCode: string): string => {
@@ -104,21 +103,19 @@ export function AdminInviteView({
         if (signUpError) {
           if (isAlreadyRegisteredError(signUpError)) {
             setErrorMessage(t("adminInvite.errors.already_registered"));
-            setLoading(false);
             return;
           }
           setErrorMessage(t("adminInvite.errors.generic"));
           if (process.env.NODE_ENV === "development" && signUpError.message) {
             setErrorMessage((prev) => `${prev} (${signUpError.message})`);
           }
-          setLoading(false);
           return;
         }
 
         const { data: sessionData } = await supabase.auth.getSession();
-        if (!sessionData.session) {
-          setShowConfirmEmailScreen(true);
-          setLoading(false);
+        const session = sessionData?.session;
+        if (!session?.user) {
+          setErrorMessage(t("adminInvite.errors.generic"));
           return;
         }
 
@@ -128,27 +125,19 @@ export function AdminInviteView({
           p_username: username.trim() || null,
         });
 
-        if (rpcError) {
-          const payload = rpcData as { error?: string } | null;
-          const msg =
-            payload?.error != null
-              ? mapRpcError(payload.error)
-              : t("adminInvite.errors.generic");
-          setErrorMessage(msg);
-          setLoading(false);
+        const payload = rpcData as { ok?: boolean; error?: string } | null;
+        const ok = payload?.ok === true || payload?.error === "already_pending";
+        if (rpcError || !ok) {
+          const errorCode = payload?.error ?? (rpcError?.message ?? "generic");
+          if (typeof window !== "undefined") {
+            console.error("[AdminInvite] request_staff_access failed", { rpcError, rpcData });
+          }
+          setErrorMessage(mapRpcError(typeof errorCode === "string" ? errorCode : "generic"));
           return;
         }
 
-        const payload = rpcData as { ok?: boolean; error?: string };
-        const ok = payload?.ok === true;
-        const existingError = payload?.error;
-        if (ok || existingError === "already_pending") {
-          setRequestSent(true);
-        } else if (existingError) {
-          setErrorMessage(mapRpcError(existingError));
-        } else {
-          setErrorMessage(t("adminInvite.errors.generic"));
-        }
+        setRequestSent(true);
+        setErrorMessage(null);
       } catch {
         setErrorMessage(t("adminInvite.errors.generic"));
       } finally {
@@ -193,49 +182,6 @@ export function AdminInviteView({
     );
   }
 
-  if (showConfirmEmailScreen) {
-    return (
-      <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
-        <header className="sticky top-0 z-10 flex justify-end border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
-          <LocaleToggle />
-        </header>
-        <div className="flex flex-1 flex-col items-center justify-center px-4 py-12">
-          <div className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400">
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {t("adminInvite.confirmEmailTitle")}
-            </h1>
-            <p className="mt-3 text-sm text-gray-500 dark:text-gray-500">
-              {t("adminInvite.confirmEmailBody")}
-            </p>
-            <p className="mt-4 text-center text-xs text-gray-500 dark:text-gray-500">
-              {t("admin.storeHint")}
-            </p>
-            <div className="mt-2 flex justify-center gap-4">
-              <button
-                type="button"
-                onClick={openInApp}
-                className="text-sm font-medium text-wine-600 hover:underline dark:text-wine-400"
-              >
-                {t("admin.openInApp")}
-              </button>
-              <a href={iosUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-wine-600 hover:underline dark:text-wine-400">
-                {t("admin.appStore")}
-              </a>
-              <a href={androidUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-wine-600 hover:underline dark:text-wine-400">
-                {t("admin.playStore")}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
       <header className="sticky top-0 z-10 flex justify-end border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
@@ -268,7 +214,7 @@ export function AdminInviteView({
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                disabled={loading}
+                disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.nameLabel")}
               />
@@ -279,7 +225,7 @@ export function AdminInviteView({
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                disabled={loading}
+                disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.usernameLabel")}
               />
@@ -291,7 +237,7 @@ export function AdminInviteView({
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={loading}
+                disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.emailLabel")}
               />
@@ -303,7 +249,7 @@ export function AdminInviteView({
                 required
                 value={emailConfirm}
                 onChange={(e) => setEmailConfirm(e.target.value)}
-                disabled={loading}
+                disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.confirmEmailLabel")}
               />
@@ -316,21 +262,21 @@ export function AdminInviteView({
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={loading}
+                disabled={loading || requestSent}
                 className={inputClass}
                 placeholder={t("adminInvite.passwordLabel")}
               />
             </div>
+            <button
+              type="submit"
+              disabled={loading || requestSent}
+              className="w-full rounded-lg bg-wine-600 px-4 py-3 text-sm font-medium text-white hover:bg-wine-700 focus:outline-none focus:ring-2 focus:ring-wine-500 focus:ring-offset-2 disabled:opacity-70 dark:bg-wine-500 dark:hover:bg-wine-600"
+            >
+              {loading ? t("adminInvite.processing") : t("adminInvite.submit")}
+            </button>
             {errorMessage ? (
               <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
             ) : null}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-lg bg-wine-600 px-4 py-3 text-sm font-medium text-white hover:bg-wine-700 focus:outline-none focus:ring-2 focus:ring-wine-500 focus:ring-offset-2 disabled:opacity-70 dark:bg-wine-500 dark:hover:bg-wine-600"
-            >
-              {loading ? t("adminInvite.sending") : t("adminInvite.submit")}
-            </button>
           </form>
 
           <p className="mt-4 text-center text-xs text-gray-500 dark:text-gray-500">

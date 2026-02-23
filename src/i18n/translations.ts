@@ -46,6 +46,7 @@ export type TranslationKeys = {
   "adminInvite.signin": string;
   "adminInvite.submit": string;
   "adminInvite.sending": string;
+  "adminInvite.processing": string;
   "adminInvite.sendRequest": string;
   "adminInvite.requestSentTitle": string;
   "adminInvite.requestSentBody": string;
@@ -110,9 +111,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.signin": "Iniciar sesión",
     "adminInvite.submit": "Continuar",
     "adminInvite.sending": "Enviando…",
+    "adminInvite.processing": "Procesando…",
     "adminInvite.sendRequest": "Enviar solicitud",
     "adminInvite.requestSentTitle": "Solicitud enviada",
-    "adminInvite.requestSentBody": "Un administrador revisará tu solicitud en la app y te asignará acceso.",
+    "adminInvite.requestSentBody": "Tu cuenta fue creada. Cuando el owner o gerente apruebe tu solicitud, inicia sesión desde la app.",
     "adminInvite.errors.invalid_token": "Código de invitación no válido.",
     "adminInvite.errors.token_expired": "El código de invitación ha expirado.",
     "adminInvite.errors.token_used": "Este código de invitación ya fue utilizado.",
@@ -172,9 +174,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.signin": "Sign in",
     "adminInvite.submit": "Continue",
     "adminInvite.sending": "Sending…",
+    "adminInvite.processing": "Processing…",
     "adminInvite.sendRequest": "Send request",
     "adminInvite.requestSentTitle": "Request sent",
-    "adminInvite.requestSentBody": "An administrator will review your request in the app and grant you access.",
+    "adminInvite.requestSentBody": "Your account was created. Once the owner or manager approves your request, sign in from the app.",
     "adminInvite.errors.invalid_token": "Invalid invitation code.",
     "adminInvite.errors.token_expired": "This invitation code has expired.",
     "adminInvite.errors.token_used": "This invitation code has already been used.",
