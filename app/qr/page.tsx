@@ -39,7 +39,12 @@ export default async function QrPage({ searchParams }: PageProps) {
 
   if (isAdminType(type)) {
     return (
-      <AdminInviteView branchName={branchName} encodedData={encodedData} />
+      <AdminInviteView
+        branchName={branchName}
+        token={payload.token}
+        encodedData={encodedData}
+        rawDataParam={encodedData}
+      />
     );
   }
 

@@ -35,6 +35,25 @@ export type TranslationKeys = {
   "admin.storeHint": string;
   "admin.appStore": string;
   "admin.playStore": string;
+  "adminInvite.registerTitle": string;
+  "adminInvite.subtitle": string;
+  "adminInvite.nameLabel": string;
+  "adminInvite.usernameLabel": string;
+  "adminInvite.emailLabel": string;
+  "adminInvite.passwordLabel": string;
+  "adminInvite.signup": string;
+  "adminInvite.signin": string;
+  "adminInvite.submit": string;
+  "adminInvite.sendRequest": string;
+  "adminInvite.requestSentTitle": string;
+  "adminInvite.requestSentBody": string;
+  "adminInvite.errors.invalid_token": string;
+  "adminInvite.errors.token_expired": string;
+  "adminInvite.errors.token_used": string;
+  "adminInvite.errors.token_max_uses_reached": string;
+  "adminInvite.errors.branch_not_found": string;
+  "adminInvite.errors.not_authenticated": string;
+  "adminInvite.errors.generic": string;
 };
 
 export const translations: Record<Locale, TranslationKeys> = {
@@ -73,6 +92,25 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.storeHint": "Si no se abre, descarga la app:",
     "admin.appStore": "App Store",
     "admin.playStore": "Play Store",
+    "adminInvite.registerTitle": "Unirse como personal",
+    "adminInvite.subtitle": "Crea una cuenta o inicia sesión para enviar tu solicitud.",
+    "adminInvite.nameLabel": "Nombre",
+    "adminInvite.usernameLabel": "Usuario (opcional)",
+    "adminInvite.emailLabel": "Correo electrónico",
+    "adminInvite.passwordLabel": "Contraseña",
+    "adminInvite.signup": "Crear cuenta",
+    "adminInvite.signin": "Iniciar sesión",
+    "adminInvite.submit": "Continuar",
+    "adminInvite.sendRequest": "Enviar solicitud",
+    "adminInvite.requestSentTitle": "Solicitud enviada",
+    "adminInvite.requestSentBody": "Un administrador revisará tu solicitud en la app y te asignará acceso.",
+    "adminInvite.errors.invalid_token": "Código de invitación no válido.",
+    "adminInvite.errors.token_expired": "El código de invitación ha expirado.",
+    "adminInvite.errors.token_used": "Este código de invitación ya fue utilizado.",
+    "adminInvite.errors.token_max_uses_reached": "Este código alcanzó su límite de usos.",
+    "adminInvite.errors.branch_not_found": "Sucursal no encontrada.",
+    "adminInvite.errors.not_authenticated": "Debes iniciar sesión para enviar la solicitud.",
+    "adminInvite.errors.generic": "Ha ocurrido un error. Inténtalo de nuevo.",
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
@@ -109,5 +147,24 @@ export const translations: Record<Locale, TranslationKeys> = {
     "admin.storeHint": "If it doesn't open, download the app:",
     "admin.appStore": "App Store",
     "admin.playStore": "Play Store",
+    "adminInvite.registerTitle": "Join as staff",
+    "adminInvite.subtitle": "Create an account or sign in to submit your request.",
+    "adminInvite.nameLabel": "Name",
+    "adminInvite.usernameLabel": "Username (optional)",
+    "adminInvite.emailLabel": "Email",
+    "adminInvite.passwordLabel": "Password",
+    "adminInvite.signup": "Create account",
+    "adminInvite.signin": "Sign in",
+    "adminInvite.submit": "Continue",
+    "adminInvite.sendRequest": "Send request",
+    "adminInvite.requestSentTitle": "Request sent",
+    "adminInvite.requestSentBody": "An administrator will review your request in the app and grant you access.",
+    "adminInvite.errors.invalid_token": "Invalid invitation code.",
+    "adminInvite.errors.token_expired": "This invitation code has expired.",
+    "adminInvite.errors.token_used": "This invitation code has already been used.",
+    "adminInvite.errors.token_max_uses_reached": "This code has reached its usage limit.",
+    "adminInvite.errors.branch_not_found": "Branch not found.",
+    "adminInvite.errors.not_authenticated": "You must sign in to send the request.",
+    "adminInvite.errors.generic": "Something went wrong. Please try again.",
   },
 };
