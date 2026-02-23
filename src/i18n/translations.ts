@@ -40,6 +40,7 @@ export type TranslationKeys = {
   "adminInvite.nameLabel": string;
   "adminInvite.usernameLabel": string;
   "adminInvite.emailLabel": string;
+  "adminInvite.confirmEmailLabel": string;
   "adminInvite.passwordLabel": string;
   "adminInvite.signup": string;
   "adminInvite.signin": string;
@@ -55,6 +56,8 @@ export type TranslationKeys = {
   "adminInvite.errors.branch_not_found": string;
   "adminInvite.errors.not_authenticated": string;
   "adminInvite.errors.already_registered": string;
+  "adminInvite.errors.email_mismatch": string;
+  "adminInvite.errors.too_many_pending": string;
   "adminInvite.errors.generic": string;
   "adminInvite.confirmEmailTitle": string;
   "adminInvite.confirmEmailBody": string;
@@ -101,6 +104,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.nameLabel": "Nombre",
     "adminInvite.usernameLabel": "Usuario (opcional)",
     "adminInvite.emailLabel": "Correo electrónico",
+    "adminInvite.confirmEmailLabel": "Confirmar correo",
     "adminInvite.passwordLabel": "Contraseña",
     "adminInvite.signup": "Crear cuenta",
     "adminInvite.signin": "Iniciar sesión",
@@ -116,6 +120,8 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.branch_not_found": "Sucursal no encontrada.",
     "adminInvite.errors.not_authenticated": "Debes iniciar sesión para enviar la solicitud.",
     "adminInvite.errors.already_registered": "Este correo ya tiene cuenta. Cuando un administrador apruebe tu solicitud, usa la app para entrar.",
+    "adminInvite.errors.email_mismatch": "Los correos no coinciden.",
+    "adminInvite.errors.too_many_pending": "Hay demasiadas solicitudes pendientes para esta sucursal. Espera a que se aprueben o rechacen.",
     "adminInvite.errors.generic": "Ha ocurrido un error. Inténtalo de nuevo.",
     "adminInvite.confirmEmailTitle": "Cuenta creada",
     "adminInvite.confirmEmailBody": "Confirma tu correo y vuelve a abrir este enlace del QR para enviar la solicitud.",
@@ -160,6 +166,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.nameLabel": "Name",
     "adminInvite.usernameLabel": "Username (optional)",
     "adminInvite.emailLabel": "Email",
+    "adminInvite.confirmEmailLabel": "Confirm email",
     "adminInvite.passwordLabel": "Password",
     "adminInvite.signup": "Create account",
     "adminInvite.signin": "Sign in",
@@ -175,6 +182,8 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.branch_not_found": "Branch not found.",
     "adminInvite.errors.not_authenticated": "You must sign in to send the request.",
     "adminInvite.errors.already_registered": "This email already has an account. Once an administrator approves your request, use the app to sign in.",
+    "adminInvite.errors.email_mismatch": "Emails do not match.",
+    "adminInvite.errors.too_many_pending": "Too many pending requests for this branch. Wait for some to be approved or rejected.",
     "adminInvite.errors.generic": "Something went wrong. Please try again.",
     "adminInvite.confirmEmailTitle": "Account created",
     "adminInvite.confirmEmailBody": "Confirm your email and open this QR link again to send the request.",

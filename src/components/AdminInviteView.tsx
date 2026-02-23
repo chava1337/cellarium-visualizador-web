@@ -16,6 +16,7 @@ const RPC_ERROR_KEYS: Record<string, string> = {
   token_max_uses_reached: "adminInvite.errors.token_max_uses_reached",
   branch_not_found: "adminInvite.errors.branch_not_found",
   not_authenticated: "adminInvite.errors.not_authenticated",
+  too_many_pending: "adminInvite.errors.too_many_pending",
 };
 
 function isAlreadyRegisteredError(err: { message?: string; status?: number }): boolean {
@@ -47,11 +48,12 @@ export function AdminInviteView({
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [emailConfirm, setEmailConfirm] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestSent, setRequestSent] = useState(false);
-  const [confirmEmail, setConfirmEmail] = useState(false);
+  const [showConfirmEmailScreen, setShowConfirmEmailScreen] = useState(false);
 
   const mapRpcError = useCallback(
     (errorCode: string): string => {
@@ -68,12 +70,17 @@ export function AdminInviteView({
 
       const nameTrim = name.trim();
       const emailTrim = email.trim();
+      const emailConfirmTrim = emailConfirm.trim();
       if (!nameTrim) {
         setErrorMessage(t("adminInvite.errors.generic"));
         return;
       }
       if (!emailTrim) {
         setErrorMessage(t("adminInvite.errors.generic"));
+        return;
+      }
+      if (emailTrim !== emailConfirmTrim) {
+        setErrorMessage(t("adminInvite.errors.email_mismatch"));
         return;
       }
       if (password.length < 6) {
@@ -110,7 +117,7 @@ export function AdminInviteView({
 
         const { data: sessionData } = await supabase.auth.getSession();
         if (!sessionData.session) {
-          setConfirmEmail(true);
+          setShowConfirmEmailScreen(true);
           setLoading(false);
           return;
         }
@@ -148,7 +155,7 @@ export function AdminInviteView({
         setLoading(false);
       }
     },
-    [token, name, username, email, password, t, mapRpcError]
+    [token, name, username, email, emailConfirm, password, t, mapRpcError]
   );
 
   const openInApp = () => {
@@ -186,7 +193,7 @@ export function AdminInviteView({
     );
   }
 
-  if (confirmEmail) {
+  if (showConfirmEmailScreen) {
     return (
       <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-900">
         <header className="sticky top-0 z-10 flex justify-end border-b border-gray-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95">
@@ -287,6 +294,18 @@ export function AdminInviteView({
                 disabled={loading}
                 className={inputClass}
                 placeholder={t("adminInvite.emailLabel")}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>{t("adminInvite.confirmEmailLabel")}</label>
+              <input
+                type="email"
+                required
+                value={emailConfirm}
+                onChange={(e) => setEmailConfirm(e.target.value)}
+                disabled={loading}
+                className={inputClass}
+                placeholder={t("adminInvite.confirmEmailLabel")}
               />
             </div>
             <div>
