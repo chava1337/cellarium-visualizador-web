@@ -56,6 +56,7 @@ export type TranslationKeys = {
   "adminInvite.errors.token_max_uses_reached": string;
   "adminInvite.errors.branch_not_found": string;
   "adminInvite.errors.not_authenticated": string;
+  "adminInvite.errors.no_session_after_signup": string;
   "adminInvite.errors.already_registered": string;
   "adminInvite.errors.email_mismatch": string;
   "adminInvite.errors.too_many_pending": string;
@@ -121,6 +122,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.token_max_uses_reached": "Este código alcanzó su límite de usos.",
     "adminInvite.errors.branch_not_found": "Sucursal no encontrada.",
     "adminInvite.errors.not_authenticated": "Debes iniciar sesión para enviar la solicitud.",
+    "adminInvite.errors.no_session_after_signup": "No se pudo iniciar sesión tras crear la cuenta. Inténtalo de nuevo.",
     "adminInvite.errors.already_registered": "Este correo ya tiene cuenta. Cuando un administrador apruebe tu solicitud, usa la app para entrar.",
     "adminInvite.errors.email_mismatch": "Los correos no coinciden.",
     "adminInvite.errors.too_many_pending": "Hay demasiadas solicitudes pendientes para esta sucursal. Espera a que se aprueben o rechacen.",
@@ -184,6 +186,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.token_max_uses_reached": "This code has reached its usage limit.",
     "adminInvite.errors.branch_not_found": "Branch not found.",
     "adminInvite.errors.not_authenticated": "You must sign in to send the request.",
+    "adminInvite.errors.no_session_after_signup": "Could not sign in after creating the account. Please try again.",
     "adminInvite.errors.already_registered": "This email already has an account. Once an administrator approves your request, use the app to sign in.",
     "adminInvite.errors.email_mismatch": "Emails do not match.",
     "adminInvite.errors.too_many_pending": "Too many pending requests for this branch. Wait for some to be approved or rejected.",

@@ -53,6 +53,7 @@ export function AdminInviteView({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [requestSent, setRequestSent] = useState(false);
+  const [debugRpc, setDebugRpc] = useState<{ rpcError: unknown; rpcData: unknown } | null>(null);
 
   const mapRpcError = useCallback(
     (errorCode: string): string => {
@@ -66,6 +67,7 @@ export function AdminInviteView({
     async (e: React.FormEvent) => {
       e.preventDefault();
       setErrorMessage(null);
+      setDebugRpc(null);
 
       const nameTrim = name.trim();
       const emailTrim = email.trim();
@@ -101,21 +103,25 @@ export function AdminInviteView({
         });
 
         if (signUpError) {
+          if (typeof window !== "undefined") {
+            console.error("[AdminInvite] signUp failed", signUpError);
+          }
           if (isAlreadyRegisteredError(signUpError)) {
             setErrorMessage(t("adminInvite.errors.already_registered"));
             return;
           }
-          setErrorMessage(t("adminInvite.errors.generic"));
-          if (process.env.NODE_ENV === "development" && signUpError.message) {
-            setErrorMessage((prev) => `${prev} (${signUpError.message})`);
-          }
+          const msg = signUpError.message?.trim() || t("adminInvite.errors.generic");
+          setErrorMessage(msg);
           return;
         }
 
         const { data: sessionData } = await supabase.auth.getSession();
         const session = sessionData?.session;
         if (!session?.user) {
-          setErrorMessage(t("adminInvite.errors.generic"));
+          if (typeof window !== "undefined") {
+            console.error("[AdminInvite] no session after signup", { authUser: null });
+          }
+          setErrorMessage(t("adminInvite.errors.no_session_after_signup"));
           return;
         }
 
@@ -128,17 +134,28 @@ export function AdminInviteView({
         const payload = rpcData as { ok?: boolean; error?: string } | null;
         const ok = payload?.ok === true || payload?.error === "already_pending";
         if (rpcError || !ok) {
-          const errorCode = payload?.error ?? (rpcError?.message ?? "generic");
           if (typeof window !== "undefined") {
-            console.error("[AdminInvite] request_staff_access failed", { rpcError, rpcData });
+            console.error("[AdminInvite] request_staff_access failed", {
+              rpcError,
+              rpcData,
+              tokenPrefix: token?.slice(0, 6),
+            });
           }
-          setErrorMessage(mapRpcError(typeof errorCode === "string" ? errorCode : "generic"));
+          setDebugRpc({ rpcError, rpcData });
+          const rpcErrorCode = payload?.error;
+          const displayMsg = rpcErrorCode
+            ? mapRpcError(rpcErrorCode)
+            : (rpcError?.message?.trim() || mapRpcError("generic"));
+          setErrorMessage(displayMsg);
           return;
         }
 
         setRequestSent(true);
         setErrorMessage(null);
-      } catch {
+      } catch (err) {
+        if (typeof window !== "undefined") {
+          console.error("[AdminInvite] handleSubmit caught", err);
+        }
         setErrorMessage(t("adminInvite.errors.generic"));
       } finally {
         setLoading(false);
@@ -275,7 +292,30 @@ export function AdminInviteView({
               {loading ? t("adminInvite.processing") : t("adminInvite.submit")}
             </button>
             {errorMessage ? (
-              <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+              <div className="space-y-2">
+                <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
+                {process.env.NODE_ENV === "development" && debugRpc && (
+                  <details className="text-xs text-gray-500 dark:text-gray-400">
+                    <summary className="cursor-pointer hover:underline">Debug (solo desarrollo)</summary>
+                    <pre className="mt-1 overflow-auto rounded bg-gray-100 p-2 dark:bg-gray-800">
+                      {JSON.stringify(
+                        {
+                          rpcError: debugRpc.rpcError
+                            ? {
+                                message: (debugRpc.rpcError as Error).message,
+                                name: (debugRpc.rpcError as Error).name,
+                                code: (debugRpc.rpcError as { code?: string }).code,
+                              }
+                            : null,
+                          rpcData: debugRpc.rpcData,
+                        },
+                        null,
+                        2
+                      )}
+                    </pre>
+                  </details>
+                )}
+              </div>
             ) : null}
           </form>
 
