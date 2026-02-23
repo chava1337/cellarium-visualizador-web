@@ -95,6 +95,7 @@ export function AdminInviteView({
           password,
           options: {
             data: {
+              signup_intent: "staff_invite",
               username: username.trim() || undefined,
             },
           },
