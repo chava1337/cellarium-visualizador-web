@@ -49,6 +49,9 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
   const name = safeText(cocktail.name);
   const description = safeText(cocktail.description);
   const ingredientsLine = getIngredientsDisplay(cocktail, locale);
+  const ingredientsList = ingredientsLine
+    ? ingredientsLine.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
 
   return (
     <article
@@ -84,10 +87,14 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
           </p>
         ) : null}
 
-        {ingredientsLine ? (
-          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 min-w-0 break-words">
-            {ingredientsLine}
-          </p>
+        {ingredientsList.length > 0 ? (
+          <ul className="text-sm text-gray-600 dark:text-gray-400 list-disc list-inside space-y-0.5 min-w-0">
+            {ingredientsList.map((item, i) => (
+              <li key={i} className="break-words">
+                {item}
+              </li>
+            ))}
+          </ul>
         ) : null}
 
         {description && description !== ingredientsLine ? (
