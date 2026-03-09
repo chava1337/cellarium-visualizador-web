@@ -32,9 +32,25 @@ export interface Wine {
   price_by_bottle: number | null;
 }
 
+/**
+ * Coctel del menú público (mismo endpoint que wines).
+ */
+export interface Cocktail {
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  price: number | null;
+  available: boolean;
+  category: string | null;
+  ingredients_preview: string | null;
+  is_alcoholic: boolean | null;
+}
+
 export interface MenuResponse {
   branch: Branch;
   wines: Wine[];
+  cocktails?: Cocktail[];
 }
 
 export type MenuApiErrorCode =

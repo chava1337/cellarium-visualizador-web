@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import type { MenuResponse, Wine } from "@/src/types/menu";
+import type { MenuResponse, Wine, Cocktail } from "@/src/types/menu";
 import { TopBar } from "@/src/components/TopBar";
 import { WineCard } from "@/src/components/WineCard";
+import { CocktailCard } from "@/src/components/CocktailCard";
 import { useLocale } from "@/src/i18n/LocaleContext";
 import type { TranslationKeys } from "@/src/i18n/translations";
 import { safeText, safeJoin } from "@/src/lib/text";
+
+type MenuTab = "wines" | "cocktails";
 
 const TYPE_ORDER: Record<string, number> = {
   red: 0,
@@ -77,6 +80,18 @@ function matchesFilter(wine: Wine, filter: FilterKey): boolean {
   return false;
 }
 
+function matchesSearchCocktail(cocktail: Cocktail, q: string): boolean {
+  if (!q.trim()) return true;
+  const lower = q.trim().toLowerCase();
+  const fields = [
+    safeText(cocktail.name),
+    safeText(cocktail.description),
+    safeText(cocktail.category),
+    safeText(cocktail.ingredients_preview),
+  ];
+  return fields.some((f) => f.toLowerCase().includes(lower));
+}
+
 interface MenuViewProps {
   data: MenuResponse;
   encodedData: string;
@@ -84,8 +99,15 @@ interface MenuViewProps {
 
 export function MenuView({ data, encodedData }: MenuViewProps) {
   const { t } = useLocale();
+  const [activeTab, setActiveTab] = useState<MenuTab>("wines");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+
+  const cocktails = data.cocktails ?? [];
+  const filteredCocktails = useMemo(
+    () => cocktails.filter((c) => matchesSearchCocktail(c, searchQuery)),
+    [cocktails, searchQuery]
+  );
 
   const filteredWines = useMemo(() => {
     return data.wines.filter(
@@ -104,22 +126,82 @@ export function MenuView({ data, encodedData }: MenuViewProps) {
     groups != null &&
     filteredWines.length > 0;
 
+  const searchPlaceholder =
+    activeTab === "wines" ? t("search.placeholder") : t("search.placeholderCocktails");
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <TopBar branch={data.branch} encodedData={encodedData} />
 
       <main className="mx-auto max-w-2xl px-4 py-6 pb-24">
-        {data.wines.length === 0 ? (
+        {/* Tabs Vinos | Cocteles */}
+        <div className="mb-4 flex rounded-lg border border-gray-200 dark:border-gray-600">
+          <button
+            type="button"
+            onClick={() => setActiveTab("wines")}
+            className={`flex-1 rounded-l-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+              activeTab === "wines"
+                ? "bg-wine-600 text-white dark:bg-wine-500"
+                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            {t("tab.wines")}
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("cocktails")}
+            className={`flex-1 rounded-r-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+              activeTab === "cocktails"
+                ? "bg-wine-600 text-white dark:bg-wine-500"
+                : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
+            }`}
+          >
+            {t("tab.cocktails")}
+          </button>
+        </div>
+
+        {activeTab === "cocktails" ? (
+          /* Pestaña Cocteles */
+          <>
+            <div className="sticky top-0 z-10 -mx-4 bg-gray-50/95 px-4 py-3 backdrop-blur dark:bg-gray-900/95">
+              <input
+                type="search"
+                placeholder={searchPlaceholder}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-wine-500 focus:outline-none focus:ring-1 focus:ring-wine-500 dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
+                aria-label="Buscar cocteles"
+              />
+            </div>
+            {cocktails.length === 0 ? (
+              <p className="mt-6 text-center text-gray-500 dark:text-gray-400">
+                {t("empty.noCocktails")}
+              </p>
+            ) : filteredCocktails.length === 0 ? (
+              <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                {t("empty.noResults")}
+              </p>
+            ) : (
+              <ul className="mt-6 space-y-3">
+                {filteredCocktails.map((cocktail) => (
+                  <li key={cocktail.id}>
+                    <CocktailCard cocktail={cocktail} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        ) : data.wines.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400">
             {t("empty.noWines")}
           </p>
         ) : (
           <>
-            {/* Barra búsqueda + chips (sticky) */}
+            {/* Barra búsqueda + chips (sticky) - solo vinos */}
             <div className="sticky top-0 z-10 -mx-4 bg-gray-50/95 px-4 py-3 backdrop-blur dark:bg-gray-900/95">
               <input
                 type="search"
-                placeholder={t("search.placeholder")}
+                placeholder={searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="mb-3 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-wine-500 focus:outline-none focus:ring-1 focus:ring-wine-500 dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"

@@ -23,6 +23,10 @@ export type TranslationKeys = {
   "wine.fizziness": string;
   "empty.noResults": string;
   "empty.noWines": string;
+  "empty.noCocktails": string;
+  "tab.wines": string;
+  "tab.cocktails": string;
+  "search.placeholderCocktails": string;
   "section.red": string;
   "section.white": string;
   "section.rose": string;
@@ -93,6 +97,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.fizziness": "Burbujas",
     "empty.noResults": "No hay resultados para esta búsqueda o filtro.",
     "empty.noWines": "No hay vinos en el menú por ahora.",
+    "empty.noCocktails": "No hay cocteles en el menú por ahora.",
+    "tab.wines": "Vinos",
+    "tab.cocktails": "Cocteles",
+    "search.placeholderCocktails": "Buscar coctel, ingrediente…",
     "section.red": "Tintos",
     "section.white": "Blancos",
     "section.rose": "Rosados",
@@ -161,6 +169,10 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.fizziness": "Bubbles",
     "empty.noResults": "No results for this search or filter.",
     "empty.noWines": "No wines on the menu at the moment.",
+    "empty.noCocktails": "No cocktails on the menu at the moment.",
+    "tab.wines": "Wines",
+    "tab.cocktails": "Cocktails",
+    "search.placeholderCocktails": "Search cocktail, ingredient…",
     "section.red": "Reds",
     "section.white": "Whites",
     "section.rose": "Rosés",
