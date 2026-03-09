@@ -88,6 +88,7 @@ function matchesSearchCocktail(cocktail: Cocktail, q: string): boolean {
     safeText(cocktail.description),
     safeText(cocktail.category),
     safeText(cocktail.ingredients_preview),
+    safeText(cocktail.ingredients),
   ];
   return fields.some((f) => f.toLowerCase().includes(lower));
 }

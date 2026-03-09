@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Cocktail } from "@/src/types/menu";
+import type { Cocktail, IngredientsBilingual } from "@/src/types/menu";
 import { useLocale } from "@/src/i18n/LocaleContext";
 import { safeText } from "@/src/lib/text";
 
@@ -18,16 +18,37 @@ function formatPrice(value: number | null): string {
   }).format(value);
 }
 
+/** Una línea de ingredientes: ingredients_preview > array join > bilingüe por locale. */
+function getIngredientsDisplay(
+  cocktail: Cocktail,
+  locale: "es" | "en"
+): string {
+  const preview = safeText(cocktail.ingredients_preview);
+  if (preview) return preview;
+  const ing = cocktail.ingredients;
+  if (Array.isArray(ing)) {
+    const joined = ing.map((x) => (typeof x === "string" ? x : safeText(x))).filter(Boolean).join(", ");
+    return joined.trim() || "";
+  }
+  if (ing && typeof ing === "object" && !Array.isArray(ing)) {
+    const bil = ing as IngredientsBilingual;
+    const primary = locale === "es" ? bil.es : bil.en;
+    const fallback = locale === "es" ? bil.en : bil.es;
+    const s = safeText(primary) || safeText(fallback);
+    return s;
+  }
+  return "";
+}
+
 export function CocktailCard({ cocktail }: CocktailCardProps) {
-  const { t } = useLocale();
+  const { locale } = useLocale();
   const [imgError, setImgError] = useState(false);
 
   const imageUrl = safeText(cocktail.image_url);
   const showImg = !!imageUrl && !imgError;
   const name = safeText(cocktail.name);
   const description = safeText(cocktail.description);
-  const ingredients = safeText(cocktail.ingredients_preview);
-  const subtitle = ingredients || description;
+  const ingredientsLine = getIngredientsDisplay(cocktail, locale);
 
   return (
     <article
@@ -53,20 +74,9 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
       </div>
 
       <div className="min-w-0 flex-1 flex flex-col gap-1.5 overflow-hidden">
-        <div className="flex items-start justify-between gap-2 min-w-0">
-          <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white min-w-0 truncate">
-            {name}
-          </h3>
-          <span
-            className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
-              cocktail.available
-                ? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
-                : "bg-gray-200 text-gray-600 dark:bg-gray-600 dark:text-gray-400"
-            }`}
-          >
-            {cocktail.available ? t("wine.available") : t("wine.soldOut")}
-          </span>
-        </div>
+        <h3 className="text-base font-semibold leading-tight text-gray-900 dark:text-white min-w-0 truncate">
+          {name}
+        </h3>
 
         {cocktail.category ? (
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 min-w-0">
@@ -74,9 +84,15 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
           </p>
         ) : null}
 
-        {subtitle ? (
+        {ingredientsLine ? (
           <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 min-w-0 break-words">
-            {subtitle}
+            {ingredientsLine}
+          </p>
+        ) : null}
+
+        {description && description !== ingredientsLine ? (
+          <p className="text-sm text-gray-500 dark:text-gray-500 line-clamp-2 min-w-0 break-words">
+            {description}
           </p>
         ) : null}
 

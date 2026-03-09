@@ -32,8 +32,16 @@ export interface Wine {
   price_by_bottle: number | null;
 }
 
+/** Ingredientes bilingües desde backend (jsonb). */
+export interface IngredientsBilingual {
+  es?: string | null;
+  en?: string | null;
+}
+
 /**
  * Coctel del menú público (mismo endpoint que wines).
+ * - Stock/disponibilidad no se muestra en UI (solo vinos).
+ * - Ingredientes: backend puede enviar ingredients_preview (string) y/o ingredients (array o bilingüe).
  */
 export interface Cocktail {
   id: string;
@@ -41,9 +49,11 @@ export interface Cocktail {
   description: string | null;
   image_url: string | null;
   price: number | null;
-  available: boolean;
+  available?: boolean;
   category: string | null;
   ingredients_preview: string | null;
+  /** Opcional: array de nombres o objeto bilingüe { es, en }. */
+  ingredients?: string[] | IngredientsBilingual | null;
   is_alcoholic: boolean | null;
 }
 
