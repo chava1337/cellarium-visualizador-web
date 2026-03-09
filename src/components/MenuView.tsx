@@ -160,29 +160,15 @@ export function MenuView({ data, encodedData }: MenuViewProps) {
         </div>
 
         {activeTab === "cocktails" ? (
-          /* Pestaña Cocteles */
+          /* Pestaña Cocteles (sin barra de búsqueda) */
           <>
-            <div className="sticky top-0 z-10 -mx-4 bg-gray-50/95 px-4 py-3 backdrop-blur dark:bg-gray-900/95">
-              <input
-                type="search"
-                placeholder={searchPlaceholder}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-wine-500 focus:outline-none focus:ring-1 focus:ring-wine-500 dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
-                aria-label="Buscar cocteles"
-              />
-            </div>
             {cocktails.length === 0 ? (
               <p className="mt-6 text-center text-gray-500 dark:text-gray-400">
                 {t("empty.noCocktails")}
               </p>
-            ) : filteredCocktails.length === 0 ? (
-              <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                {t("empty.noResults")}
-              </p>
             ) : (
               <ul className="mt-6 space-y-3">
-                {filteredCocktails.map((cocktail) => (
+                {cocktails.map((cocktail) => (
                   <li key={cocktail.id}>
                     <CocktailCard cocktail={cocktail} />
                   </li>
