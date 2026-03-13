@@ -71,7 +71,6 @@ export type TranslationKeys = {
   "adminInvite.errors.generic": string;
   "adminInvite.confirmEmailTitle": string;
   "adminInvite.confirmEmailBody": string;
-  "admin.openInDevApp": string;
 };
 
 export const translations: Record<Locale, TranslationKeys> = {
@@ -146,7 +145,6 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.generic": "Ha ocurrido un error. Inténtalo de nuevo.",
     "adminInvite.confirmEmailTitle": "Cuenta creada",
     "adminInvite.confirmEmailBody": "Confirma tu correo y vuelve a abrir este enlace del QR para enviar la solicitud.",
-    "admin.openInDevApp": "Abrir build de desarrollo",
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
@@ -219,6 +217,5 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.generic": "Something went wrong. Please try again.",
     "adminInvite.confirmEmailTitle": "Account created",
     "adminInvite.confirmEmailBody": "Confirm your email and open this QR link again to send the request.",
-    "admin.openInDevApp": "Open dev build",
   },
 };
