@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "6NA9V92N7R.com.cellarium.winecatalog",
+        "paths": ["/qr", "/qr*"]
+      }
+    ]
+  }
+}
