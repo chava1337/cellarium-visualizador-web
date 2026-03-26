@@ -25,6 +25,20 @@ export default function HomePage() {
           /menu/[token]
         </Link>
       </p>
+      <nav
+        className="mt-10 flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-gray-400 dark:text-gray-500"
+        aria-label="Información legal"
+      >
+        <Link href="/privacy" className="hover:text-wine-700 dark:hover:text-wine-400">
+          Privacidad
+        </Link>
+        <Link href="/terms" className="hover:text-wine-700 dark:hover:text-wine-400">
+          Términos
+        </Link>
+        <Link href="/support" className="hover:text-wine-700 dark:hover:text-wine-400">
+          Soporte
+        </Link>
+      </nav>
     </div>
   );
 }
