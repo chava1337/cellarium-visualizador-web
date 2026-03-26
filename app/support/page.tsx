@@ -13,9 +13,10 @@ export default function SupportPage() {
     <LegalPageShell title="Soporte" lastUpdatedPlaceholder={false}>
       <section className="space-y-4">
         <p className="text-base text-gray-700 dark:text-gray-300">
-          Cellarium es una plataforma SaaS para restaurantes: catálogo de vinos y coctelería,
-          inventario, reportes y experiencia para comensales. Si necesita ayuda con su cuenta o
-          el uso del servicio, utilice los datos de contacto siguientes.
+          El equipo de Cellarium ofrece soporte a establecimientos y usuarios de la plataforma
+          (cuentas, facturación, uso del catálogo, inventario y aplicación móvil). Este canal no
+          sustituye a la emergencias del establecimiento; para incidencias de seguridad o salud,
+          contacte a los servicios locales correspondientes.
         </p>
       </section>
 
@@ -30,26 +31,23 @@ export default function SupportPage() {
             </dt>
             <dd className="mt-1">
               <a
-                href="mailto:support@cellarium.net"
+                href="mailto:noirsongstudios@gmail.com"
                 className="font-medium text-wine-800 underline decoration-wine-300 underline-offset-2 hover:text-wine-700 dark:text-wine-400 dark:hover:text-wine-300"
               >
-                support@cellarium.net
+                noirsongstudios@gmail.com
               </a>
-              <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
-                [Confirmar dirección operativa en producción]
-              </span>
             </dd>
           </div>
           <div>
             <dt className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-              Tiempo de respuesta orientativo
+              Tiempo de respuesta
             </dt>
             <dd className="mt-1 text-gray-700 dark:text-gray-300">
-              Respuesta habitual en un plazo de{" "}
+              Objetivo de respuesta en{" "}
               <strong className="font-medium text-gray-900 dark:text-white">
-                24 a 48 horas hábiles
-              </strong>
-              , según volumen y complejidad de la solicitud.
+                24 a 48 horas
+              </strong>{" "}
+              (días hábiles), según volumen y complejidad de la solicitud.
             </dd>
           </div>
           <div>
@@ -57,22 +55,12 @@ export default function SupportPage() {
               Sobre Cellarium
             </dt>
             <dd className="mt-1 text-gray-700 dark:text-gray-300">
-              Este sitio web incluye el visualizador de menú para comensales y la documentación
-              pública de Cellarium. Para incidencias técnicas o comerciales, el canal preferente
-              es el correo de soporte indicado arriba.
+              Cellarium es una plataforma SaaS para restaurantes. Este sitio incluye el visualizador
+              web del menú para comensales y la documentación pública. Para cuentas de
+              establecimiento, facturación o la app móvil, use el correo de soporte indicado arriba.
             </dd>
           </div>
         </dl>
-      </section>
-
-      <section className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-        <p>
-          <span className="rounded bg-gray-100 px-1.5 py-0.5 dark:bg-gray-800">
-            [PLACEHOLDER]
-          </span>{" "}
-          Añadir aquí, si aplica, horario de atención, idiomas y enlace a estado del servicio
-          (status page).
-        </p>
       </section>
     </LegalPageShell>
   );
