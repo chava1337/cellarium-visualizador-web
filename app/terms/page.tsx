@@ -124,7 +124,28 @@ export default function TermsPage() {
 
       <section className="space-y-3">
         <h2 className="text-lg font-medium text-gray-900 dark:text-white">
-          9. Contacto
+          9. Operador del servicio
+        </h2>
+        <p>
+          Cellarium es operado por <strong className="text-gray-900 dark:text-white">Noirsong Studios</strong>.
+        </p>
+        <p>
+          <strong className="text-gray-900 dark:text-white">Ubicación:</strong> México
+        </p>
+        <p>
+          <strong className="text-gray-900 dark:text-white">Contacto:</strong>{" "}
+          <a
+            href="mailto:noirsongstudios@gmail.com"
+            className="font-medium text-wine-800 underline dark:text-wine-400"
+          >
+            noirsongstudios@gmail.com
+          </a>
+        </p>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+          10. Contacto
         </h2>
         <p>
           Para consultas sobre estos términos:{" "}
