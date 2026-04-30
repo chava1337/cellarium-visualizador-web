@@ -20,6 +20,7 @@ export type TranslationKeys = {
   "wine.acidity": string;
   "wine.sweetness": string;
   "wine.intensity": string;
+  "wine.tannin": string;
   "wine.fizziness": string;
   "empty.noResults": string;
   "empty.noWines": string;
@@ -94,6 +95,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.acidity": "Acidez",
     "wine.sweetness": "Dulzor",
     "wine.intensity": "Aroma",
+    "wine.tannin": "Tanicidad",
     "wine.fizziness": "Burbujas",
     "empty.noResults": "No hay resultados para esta búsqueda o filtro.",
     "empty.noWines": "No hay vinos en el menú por ahora.",
@@ -166,6 +168,7 @@ export const translations: Record<Locale, TranslationKeys> = {
     "wine.acidity": "Acidity",
     "wine.sweetness": "Sweetness",
     "wine.intensity": "Aroma",
+    "wine.tannin": "Tannin",
     "wine.fizziness": "Bubbles",
     "empty.noResults": "No results for this search or filter.",
     "empty.noWines": "No wines on the menu at the moment.",

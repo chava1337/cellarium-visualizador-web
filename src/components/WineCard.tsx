@@ -61,13 +61,18 @@ export function WineCard({ wine }: WineCardProps) {
   const metaLine = safeJoin([wine.vintage, wine.grape_variety], " · ");
   const description = safeText(wine.description);
   const name = safeText(wine.name);
+  const wineType = safeText(wine.type).toLowerCase();
+  const isRedWine = wineType.includes("red") || wineType.includes("tinto");
+  const isSparklingWine =
+    wineType.includes("sparkling") || wineType.includes("espumoso");
 
   const hasPrimarySensory =
     wine.body_level != null ||
     wine.acidity_level != null ||
     wine.sweetness_level != null;
-  const hasExtraSensory =
-    wine.intensity_level != null || wine.fizziness_level != null;
+  const hasTannin = isRedWine && wine.intensity_level != null;
+  const hasFizziness = isSparklingWine && wine.fizziness_level != null;
+  const hasExtraSensory = hasTannin || hasFizziness;
   const hasSensory = hasPrimarySensory || hasExtraSensory;
 
   const hasLongDescription =
@@ -128,7 +133,7 @@ export function WineCard({ wine }: WineCardProps) {
         ) : null}
 
         {metaLine ? (
-          <p className="text-xs text-gray-500 dark:text-gray-500 min-w-0 break-words">
+          <p className="text-xs text-gray-500 dark:text-gray-500 min-w-0 break-words line-clamp-2 overflow-hidden leading-snug">
             {metaLine}
           </p>
         ) : null}
@@ -172,11 +177,11 @@ export function WineCard({ wine }: WineCardProps) {
             {wine.sweetness_level != null && (
               <SensoryBar label={t("wine.sweetness")} value={wine.sweetness_level} />
             )}
-            {expanded && wine.intensity_level != null && (
-              <SensoryBar label={t("wine.intensity")} value={wine.intensity_level} />
+            {expanded && hasTannin && (
+              <SensoryBar label={t("wine.tannin")} value={wine.intensity_level!} />
             )}
-            {expanded && wine.fizziness_level != null && (
-              <SensoryBar label={t("wine.fizziness")} value={wine.fizziness_level} />
+            {expanded && hasFizziness && (
+              <SensoryBar label={t("wine.fizziness")} value={wine.fizziness_level!} />
             )}
           </div>
         )}
