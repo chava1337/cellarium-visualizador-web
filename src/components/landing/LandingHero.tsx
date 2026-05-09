@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { LandingHeroCarousel } from "@/src/components/landing/LandingHeroCarousel";
 import { LandingStoreButtons } from "@/src/components/landing/LandingStoreButtons";
 
@@ -9,7 +8,7 @@ type LandingHeroProps = {
 
 export function LandingHero({ androidUrl, iosUrl }: LandingHeroProps) {
   return (
-    <section className="relative overflow-x-hidden border-b border-[#c9a962]/10 bg-gradient-to-b from-[#140c10] via-[#1a1115] to-[#120a0d] px-4 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="relative overflow-x-hidden border-b border-[#c9a962]/10 bg-gradient-to-b from-[#140c10] via-[#1a1115] to-[#120a0d] px-4 pb-12 pt-8 sm:pb-16 sm:pt-10 lg:pb-20 lg:pt-12">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
@@ -21,25 +20,11 @@ export function LandingHero({ androidUrl, iosUrl }: LandingHeroProps) {
       />
 
       <div className="relative mx-auto flex w-full max-w-5xl min-w-0 flex-col items-center text-center">
-        <div className="flex flex-col items-center">
-          <Image
-            src="/landing/branding/cellarium-logo.png"
-            alt="Cellarium"
-            width={200}
-            height={52}
-            className="h-9 w-auto object-contain opacity-[0.97] sm:h-10 md:h-11"
-            priority
-          />
-          <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.42em] text-[#c9a962]/82 sm:text-[11px] sm:tracking-[0.38em]">
-            CELLARIUM
-          </p>
-        </div>
-
-        <h1 className="mt-10 max-w-3xl font-serif text-[1.75rem] font-medium leading-[1.18] tracking-tight text-[#faf6f0] sm:text-4xl lg:mt-12 lg:text-[2.65rem] lg:leading-[1.14]">
+        <h1 className="max-w-3xl font-serif text-[1.75rem] font-medium leading-[1.18] tracking-tight text-[#faf6f0] sm:text-4xl lg:text-[2.65rem] lg:leading-[1.14]">
           Moderniza la experiencia de tu restaurante
         </h1>
 
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-400 sm:text-lg">
+        <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-stone-400 sm:mt-4 sm:text-lg">
           Cellarium es el catálogo digital premium para vinos y cocteles, diseñado para restaurantes,
           wine bars y sommeliers.
         </p>
@@ -48,10 +33,10 @@ export function LandingHero({ androidUrl, iosUrl }: LandingHeroProps) {
           androidUrl={androidUrl}
           iosUrl={iosUrl}
           primaryPlay
-          className="mt-9 justify-center"
+          className="mt-6 justify-center sm:mt-7"
         />
 
-        <div className="mt-14 w-full min-w-0 max-w-full sm:mt-16 lg:mt-[4.25rem]">
+        <div className="mt-8 w-full min-w-0 max-w-full sm:mt-10 lg:mt-11">
           <LandingHeroCarousel />
         </div>
       </div>
