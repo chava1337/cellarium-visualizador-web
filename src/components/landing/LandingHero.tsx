@@ -1,5 +1,5 @@
+import { LandingHeroCarousel } from "@/src/components/landing/LandingHeroCarousel";
 import { LandingStoreButtons } from "@/src/components/landing/LandingStoreButtons";
-import { LandingVisualMockup } from "@/src/components/landing/LandingVisualMockup";
 
 type LandingHeroProps = {
   androidUrl: string;
@@ -38,8 +38,8 @@ export function LandingHero({ androidUrl, iosUrl }: LandingHeroProps) {
               className="mt-9 justify-center sm:justify-start"
             />
           </div>
-          <div className="flex justify-center lg:justify-end">
-            <LandingVisualMockup />
+          <div className="flex min-w-0 justify-center lg:justify-end">
+            <LandingHeroCarousel />
           </div>
         </div>
       </div>
