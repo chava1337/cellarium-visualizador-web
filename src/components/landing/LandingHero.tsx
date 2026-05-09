@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { LandingHeroCarousel } from "@/src/components/landing/LandingHeroCarousel";
 import { LandingStoreButtons } from "@/src/components/landing/LandingStoreButtons";
 
@@ -8,39 +9,50 @@ type LandingHeroProps = {
 
 export function LandingHero({ androidUrl, iosUrl }: LandingHeroProps) {
   return (
-    <section className="relative overflow-hidden border-b border-[#c9a962]/10 bg-gradient-to-b from-[#140c10] via-[#1a1115] to-[#120a0d] px-4 pb-16 pt-14 sm:pb-20 sm:pt-20 lg:pb-24">
+    <section className="relative overflow-x-hidden border-b border-[#c9a962]/10 bg-gradient-to-b from-[#140c10] via-[#1a1115] to-[#120a0d] px-4 pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.35]"
         style={{
-          backgroundImage: `radial-gradient(ellipse 80% 50% at 50% -20%, rgba(201, 169, 98, 0.18), transparent),
-            radial-gradient(ellipse 60% 40% at 100% 50%, rgba(118, 66, 66, 0.12), transparent),
-            radial-gradient(ellipse 50% 60% at 0% 80%, rgba(80, 40, 48, 0.15), transparent)`,
+          backgroundImage: `radial-gradient(ellipse 80% 45% at 50% -15%, rgba(201, 169, 98, 0.2), transparent),
+            radial-gradient(ellipse 55% 50% at 85% 40%, rgba(118, 66, 66, 0.1), transparent),
+            radial-gradient(ellipse 50% 55% at 15% 75%, rgba(80, 40, 48, 0.14), transparent)`,
         }}
         aria-hidden
       />
-      <div className="relative mx-auto max-w-6xl">
-        <p className="text-center text-[11px] font-semibold uppercase tracking-[0.35em] text-[#c9a962]/85 sm:text-left">
-          Cellarium
+
+      <div className="relative mx-auto flex w-full max-w-5xl min-w-0 flex-col items-center text-center">
+        <div className="flex flex-col items-center">
+          <Image
+            src="/landing/branding/cellarium-logo.png"
+            alt="Cellarium"
+            width={200}
+            height={52}
+            className="h-9 w-auto object-contain opacity-[0.97] sm:h-10 md:h-11"
+            priority
+          />
+          <p className="mt-2.5 text-[10px] font-semibold uppercase tracking-[0.42em] text-[#c9a962]/82 sm:text-[11px] sm:tracking-[0.38em]">
+            CELLARIUM
+          </p>
+        </div>
+
+        <h1 className="mt-10 max-w-3xl font-serif text-[1.75rem] font-medium leading-[1.18] tracking-tight text-[#faf6f0] sm:text-4xl lg:mt-12 lg:text-[2.65rem] lg:leading-[1.14]">
+          Moderniza la experiencia de tu restaurante
+        </h1>
+
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-stone-400 sm:text-lg">
+          Cellarium es el catálogo digital premium para vinos y cocteles, diseñado para restaurantes,
+          wine bars y sommeliers.
         </p>
-        <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
-          <div className="text-center sm:text-left">
-            <h1 className="font-serif text-[1.75rem] font-medium leading-[1.15] tracking-tight text-[#faf6f0] sm:text-4xl lg:text-[2.75rem] lg:leading-[1.12]">
-              Moderniza la experiencia de tu restaurante
-            </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-stone-400 sm:mx-0 sm:text-lg lg:max-w-[30rem]">
-              Cellarium es el catálogo digital premium para vinos y cocteles, diseñado para
-              restaurantes, wine bars y sommeliers.
-            </p>
-            <LandingStoreButtons
-              androidUrl={androidUrl}
-              iosUrl={iosUrl}
-              primaryPlay
-              className="mt-9 justify-center sm:justify-start"
-            />
-          </div>
-          <div className="flex min-w-0 justify-center lg:justify-end">
-            <LandingHeroCarousel />
-          </div>
+
+        <LandingStoreButtons
+          androidUrl={androidUrl}
+          iosUrl={iosUrl}
+          primaryPlay
+          className="mt-9 justify-center"
+        />
+
+        <div className="mt-14 w-full min-w-0 max-w-full sm:mt-16 lg:mt-[4.25rem]">
+          <LandingHeroCarousel />
         </div>
       </div>
     </section>
