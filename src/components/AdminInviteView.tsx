@@ -3,13 +3,13 @@
 import { useLocale } from "@/src/i18n/LocaleContext";
 import { LocaleToggle } from "@/src/components/LocaleToggle";
 import { supabase } from "@/src/lib/supabaseClient";
-import type { TranslationKeys } from "@/src/i18n/translations";
+import type { TranslationKey } from "@/src/i18n/translations";
 import { useCallback, useState } from "react";
 
 const DEFAULT_IOS = "https://apps.apple.com/";
 const DEFAULT_ANDROID = "https://play.google.com/store";
 
-const RPC_ERROR_KEYS: Record<string, string> = {
+const RPC_ERROR_KEYS: Record<string, TranslationKey> = {
   invalid_token: "adminInvite.errors.invalid_token",
   token_expired: "adminInvite.errors.token_expired",
   token_used: "adminInvite.errors.token_used_staff",
@@ -58,7 +58,7 @@ export function AdminInviteView({
   const mapRpcError = useCallback(
     (errorCode: string): string => {
       const key = RPC_ERROR_KEYS[errorCode];
-      return key ? t(key as keyof TranslationKeys) : t("adminInvite.errors.generic");
+      return key ? t(key) : t("adminInvite.errors.generic");
     },
     [t]
   );

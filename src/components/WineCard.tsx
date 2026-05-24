@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Wine } from "@/src/types/menu";
 import { useLocale } from "@/src/i18n/LocaleContext";
+import { resolveField } from "@/src/lib/i18nFields";
 import { safeText, safeJoin } from "@/src/lib/text";
 
 interface WineCardProps {
@@ -48,7 +49,7 @@ function SensoryBar({
 const DESCRIPTION_TRUNCATE_LENGTH = 120;
 
 export function WineCard({ wine }: WineCardProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [imgError, setImgError] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -57,7 +58,9 @@ export function WineCard({ wine }: WineCardProps) {
 
   const stockStatus = formatStock(wine.stock_quantity);
   const winery = safeText(wine.winery);
-  const regionCountry = safeJoin([wine.region, wine.country], ", ");
+  const region = resolveField(wine.region_i18n, wine.region, locale);
+  const country = resolveField(wine.country_i18n, wine.country, locale);
+  const regionCountry = safeJoin([region, country], ", ");
   const metaLine = safeJoin([wine.vintage, wine.grape_variety], " · ");
   const description = safeText(wine.description);
   const name = safeText(wine.name);

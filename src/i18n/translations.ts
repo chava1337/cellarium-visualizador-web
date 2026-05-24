@@ -1,7 +1,9 @@
-export type Locale = "es" | "en";
+export type Locale = "es" | "en" | "pt-BR";
 
 export type TranslationKeys = {
   "search.placeholder": string;
+  "search.placeholderCocktails": string;
+  "search.ariaLabel": string;
   "filters.all": string;
   "filters.red": string;
   "filters.white": string;
@@ -27,7 +29,19 @@ export type TranslationKeys = {
   "empty.noCocktails": string;
   "tab.wines": string;
   "tab.cocktails": string;
-  "search.placeholderCocktails": string;
+  "loading.menu": string;
+  "error.loadTitle": string;
+  "error.retry": string;
+  "error.invalid_token": string;
+  "error.not_guest": string;
+  "error.token_expired": string;
+  "error.not_found": string;
+  "error.rate_limited": string;
+  "error.server_error": string;
+  "error.network_error": string;
+  "error.timeout": string;
+  "error.invalid_qr": string;
+  "error.generic": string;
   "section.red": string;
   "section.white": string;
   "section.rose": string;
@@ -74,9 +88,14 @@ export type TranslationKeys = {
   "adminInvite.confirmEmailBody": string;
 };
 
+/** Clave de traducción (nombre del string en el diccionario). */
+export type TranslationKey = keyof TranslationKeys;
+
 export const translations: Record<Locale, TranslationKeys> = {
   es: {
     "search.placeholder": "Buscar vino, uva, región…",
+    "search.placeholderCocktails": "Buscar coctel, ingrediente…",
+    "search.ariaLabel": "Buscar en el menú",
     "filters.all": "Todos",
     "filters.red": "Tinto",
     "filters.white": "Blanco",
@@ -102,7 +121,19 @@ export const translations: Record<Locale, TranslationKeys> = {
     "empty.noCocktails": "No hay cocteles en el menú por ahora.",
     "tab.wines": "Vinos",
     "tab.cocktails": "Cocteles",
-    "search.placeholderCocktails": "Buscar coctel, ingrediente…",
+    "loading.menu": "Cargando menú…",
+    "error.loadTitle": "No se pudo cargar el menú",
+    "error.retry": "Reintentar",
+    "error.invalid_token": "El enlace del menú no es válido.",
+    "error.not_guest": "Este QR no es para comensales.",
+    "error.token_expired": "Este enlace ha caducado.",
+    "error.not_found": "No encontramos este menú.",
+    "error.rate_limited": "Demasiadas solicitudes. Intenta en un momento.",
+    "error.server_error": "Error en el servidor. Intenta más tarde.",
+    "error.network_error": "No hay conexión. Revisa tu red e intenta de nuevo.",
+    "error.timeout": "La solicitud tardó demasiado. Intenta de nuevo.",
+    "error.invalid_qr": "QR no es para comensales o es inválido.",
+    "error.generic": "Algo salió mal. Intenta de nuevo.",
     "section.red": "Tintos",
     "section.white": "Blancos",
     "section.rose": "Rosados",
@@ -150,6 +181,8 @@ export const translations: Record<Locale, TranslationKeys> = {
   },
   en: {
     "search.placeholder": "Search wine, grape, region…",
+    "search.placeholderCocktails": "Search cocktail, ingredient…",
+    "search.ariaLabel": "Search the menu",
     "filters.all": "All",
     "filters.red": "Red",
     "filters.white": "White",
@@ -175,7 +208,19 @@ export const translations: Record<Locale, TranslationKeys> = {
     "empty.noCocktails": "No cocktails on the menu at the moment.",
     "tab.wines": "Wines",
     "tab.cocktails": "Cocktails",
-    "search.placeholderCocktails": "Search cocktail, ingredient…",
+    "loading.menu": "Loading menu…",
+    "error.loadTitle": "Could not load the menu",
+    "error.retry": "Retry",
+    "error.invalid_token": "This menu link is not valid.",
+    "error.not_guest": "This QR is not for guests.",
+    "error.token_expired": "This link has expired.",
+    "error.not_found": "We couldn't find this menu.",
+    "error.rate_limited": "Too many requests. Please try again shortly.",
+    "error.server_error": "Server error. Please try again later.",
+    "error.network_error": "No connection. Check your network and try again.",
+    "error.timeout": "The request took too long. Please try again.",
+    "error.invalid_qr": "Invalid QR or not for guests.",
+    "error.generic": "Something went wrong. Please try again.",
     "section.red": "Reds",
     "section.white": "Whites",
     "section.rose": "Rosés",
@@ -220,5 +265,99 @@ export const translations: Record<Locale, TranslationKeys> = {
     "adminInvite.errors.generic": "Something went wrong. Please try again.",
     "adminInvite.confirmEmailTitle": "Account created",
     "adminInvite.confirmEmailBody": "Confirm your email and open this QR link again to send the request.",
+  },
+  "pt-BR": {
+    "search.placeholder": "Buscar vinho, uva, região…",
+    "search.placeholderCocktails": "Buscar coquetel, ingrediente…",
+    "search.ariaLabel": "Buscar no cardápio",
+    "filters.all": "Todos",
+    "filters.red": "Tinto",
+    "filters.white": "Branco",
+    "filters.sparkling": "Espumante",
+    "filters.glass": "Por taça",
+    "filters.bottle": "Por garrafa",
+    "wine.available": "Disponível",
+    "wine.soldOut": "Esgotado",
+    "wine.glass": "Taça",
+    "wine.bottle": "Garrafa",
+    "wine.showProfile": "Ver perfil completo",
+    "wine.hideProfile": "Ocultar perfil",
+    "wine.showMore": "Ver mais",
+    "wine.showLess": "Ver menos",
+    "wine.body": "Corpo",
+    "wine.acidity": "Acidez",
+    "wine.sweetness": "Doçura",
+    "wine.intensity": "Aroma",
+    "wine.tannin": "Tanino",
+    "wine.fizziness": "Borbulhas",
+    "empty.noResults": "Nenhum resultado para esta busca ou filtro.",
+    "empty.noWines": "Não há vinhos no cardápio no momento.",
+    "empty.noCocktails": "Não há coquetéis no cardápio no momento.",
+    "tab.wines": "Vinhos",
+    "tab.cocktails": "Coquetéis",
+    "loading.menu": "Carregando cardápio…",
+    "error.loadTitle": "Não foi possível carregar o cardápio",
+    "error.retry": "Tentar novamente",
+    "error.invalid_token": "O link do cardápio não é válido.",
+    "error.not_guest": "Este QR não é para clientes.",
+    "error.token_expired": "Este link expirou.",
+    "error.not_found": "Não encontramos este cardápio.",
+    "error.rate_limited": "Muitas solicitações. Tente novamente em instantes.",
+    "error.server_error": "Erro no servidor. Tente novamente mais tarde.",
+    "error.network_error": "Sem conexão. Verifique sua rede e tente novamente.",
+    "error.timeout": "A solicitação demorou demais. Tente novamente.",
+    "error.invalid_qr": "QR inválido ou não destinado a clientes.",
+    "error.generic": "Algo deu errado. Tente novamente.",
+    "section.red": "Tintos",
+    "section.white": "Brancos",
+    "section.rose": "Rosés",
+    "section.sparkling": "Espumantes",
+    "section.other": "Outros",
+    "admin.title": "Convite de equipe",
+    "admin.branchLabel": "Filial",
+    "admin.message": "Abra o link no app Cellarium para gerenciar esta filial.",
+    "admin.openInApp": "Abrir no app",
+    "admin.storeHint": "Se não abrir, baixe o app:",
+    "admin.appStore": "App Store",
+    "admin.playStore": "Play Store",
+    "adminInvite.registerTitle": "Entrar como equipe",
+    "adminInvite.subtitle": "Crie uma conta para enviar sua solicitação de acesso.",
+    "adminInvite.nameLabel": "Nome",
+    "adminInvite.usernameLabel": "Usuário (opcional)",
+    "adminInvite.emailLabel": "E-mail",
+    "adminInvite.confirmEmailLabel": "Confirmar e-mail",
+    "adminInvite.passwordLabel": "Senha",
+    "adminInvite.confirmPasswordLabel": "Confirmar senha",
+    "adminInvite.signup": "Criar conta",
+    "adminInvite.signin": "Entrar",
+    "adminInvite.submit": "Continuar",
+    "adminInvite.sending": "Enviando…",
+    "adminInvite.processing": "Processando…",
+    "adminInvite.sendRequest": "Enviar solicitação",
+    "adminInvite.requestSentTitle": "Solicitação enviada",
+    "adminInvite.requestSentBody":
+      "Sua conta foi criada. Quando o proprietário ou gerente aprovar sua solicitação, entre pelo app.",
+    "adminInvite.errors.invalid_token": "Código de convite inválido.",
+    "adminInvite.errors.token_expired": "Este código de convite expirou.",
+    "adminInvite.errors.token_used": "Este código de convite já foi utilizado.",
+    "adminInvite.errors.token_used_staff":
+      "Este código já foi utilizado. Peça ao gerente ou proprietário para gerar um novo.",
+    "adminInvite.errors.token_max_uses_reached": "Este código atingiu o limite de usos.",
+    "adminInvite.errors.token_max_uses_reached_staff":
+      "Este código já atingiu o limite de uso. Peça ao gerente ou proprietário para gerar um novo.",
+    "adminInvite.errors.branch_not_found": "Filial não encontrada.",
+    "adminInvite.errors.not_authenticated": "Você precisa entrar para enviar a solicitação.",
+    "adminInvite.errors.no_session_after_signup":
+      "Não foi possível entrar após criar a conta. Tente novamente.",
+    "adminInvite.errors.already_registered":
+      "Este e-mail já possui conta. Quando um administrador aprovar sua solicitação, use o app para entrar.",
+    "adminInvite.errors.email_mismatch": "Os e-mails não coincidem.",
+    "adminInvite.errors.password_mismatch": "As senhas não coincidem.",
+    "adminInvite.errors.too_many_pending":
+      "Há solicitações pendentes demais para esta filial. Aguarde aprovação ou rejeição.",
+    "adminInvite.errors.generic": "Ocorreu um erro. Tente novamente.",
+    "adminInvite.confirmEmailTitle": "Conta criada",
+    "adminInvite.confirmEmailBody":
+      "Confirme seu e-mail e abra novamente este link do QR para enviar a solicitação.",
   },
 };

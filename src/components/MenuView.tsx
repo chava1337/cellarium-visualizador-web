@@ -6,8 +6,9 @@ import { TopBar } from "@/src/components/TopBar";
 import { WineCard } from "@/src/components/WineCard";
 import { CocktailCard } from "@/src/components/CocktailCard";
 import { useLocale } from "@/src/i18n/LocaleContext";
-import type { TranslationKeys } from "@/src/i18n/translations";
-import { safeText, safeJoin } from "@/src/lib/text";
+import type { Locale, TranslationKeys } from "@/src/i18n/translations";
+import { resolveField } from "@/src/lib/i18nFields";
+import { safeText } from "@/src/lib/text";
 
 type MenuTab = "wines" | "cocktails";
 
@@ -55,15 +56,15 @@ function groupWinesByType(wines: Wine[]): Map<string, Wine[]> {
   return ordered;
 }
 
-function matchesSearch(wine: Wine, q: string): boolean {
+function matchesSearch(wine: Wine, q: string, locale: Locale): boolean {
   if (!q.trim()) return true;
   const lower = q.trim().toLowerCase();
   const fields = [
     safeText(wine.name),
     safeText(wine.winery),
     safeText(wine.grape_variety),
-    safeText(wine.region),
-    safeText(wine.country),
+    resolveField(wine.region_i18n, wine.region, locale),
+    resolveField(wine.country_i18n, wine.country, locale),
     safeText(wine.vintage),
   ];
   return fields.some((f) => f.toLowerCase().includes(lower));
@@ -97,7 +98,7 @@ interface MenuViewProps {
 }
 
 export function MenuView({ data, encodedData }: MenuViewProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [activeTab, setActiveTab] = useState<MenuTab>("wines");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
@@ -110,9 +111,9 @@ export function MenuView({ data, encodedData }: MenuViewProps) {
 
   const filteredWines = useMemo(() => {
     return data.wines.filter(
-      (w) => matchesSearch(w, searchQuery) && matchesFilter(w, activeFilter)
+      (w) => matchesSearch(w, searchQuery, locale) && matchesFilter(w, activeFilter)
     );
-  }, [data.wines, searchQuery, activeFilter]);
+  }, [data.wines, searchQuery, activeFilter, locale]);
 
   const groups = useMemo(
     () => (activeFilter === "all" ? groupWinesByType(filteredWines) : null),
@@ -190,7 +191,7 @@ export function MenuView({ data, encodedData }: MenuViewProps) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="mb-3 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm placeholder-gray-400 focus:border-wine-500 focus:outline-none focus:ring-1 focus:ring-wine-500 dark:border-gray-600 dark:bg-gray-800 dark:placeholder-gray-500"
-                aria-label="Buscar en el menú"
+                aria-label={t("search.ariaLabel")}
               />
               <div className="flex flex-wrap gap-2">
                 {FILTER_KEYS.map(({ key, labelKey }) => (

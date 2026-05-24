@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { Cocktail, IngredientsBilingual } from "@/src/types/menu";
+import type { Cocktail } from "@/src/types/menu";
 import { useLocale } from "@/src/i18n/LocaleContext";
+import type { Locale } from "@/src/i18n/translations";
+import { resolveField, type I18nStringMap } from "@/src/lib/i18nFields";
 import { safeText } from "@/src/lib/text";
 
 interface CocktailCardProps {
@@ -18,25 +20,38 @@ function formatPrice(value: number | null): string {
   }).format(value);
 }
 
-/** Una línea de ingredientes: ingredients_preview > array join > bilingüe por locale. */
-function getIngredientsDisplay(
-  cocktail: Cocktail,
-  locale: "es" | "en"
-): string {
+function isI18nMap(value: unknown): value is I18nStringMap {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+/** String legacy o mapa i18n { es, en, pt } → resolveField. */
+function resolveMaybeI18n(value: unknown, locale: Locale): string {
+  if (isI18nMap(value)) {
+    return resolveField(value, null, locale);
+  }
+  return safeText(value);
+}
+
+/**
+ * Ingredientes: preview > array legacy > objeto i18n (pt → en → es).
+ */
+function getIngredientsDisplay(cocktail: Cocktail, locale: Locale): string {
   const preview = safeText(cocktail.ingredients_preview);
   if (preview) return preview;
+
   const ing = cocktail.ingredients;
   if (Array.isArray(ing)) {
-    const joined = ing.map((x) => (typeof x === "string" ? x : safeText(x))).filter(Boolean).join(", ");
+    const joined = ing
+      .map((x) => (typeof x === "string" ? x : safeText(x)))
+      .filter(Boolean)
+      .join(", ");
     return joined.trim() || "";
   }
-  if (ing && typeof ing === "object" && !Array.isArray(ing)) {
-    const bil = ing as IngredientsBilingual;
-    const primary = locale === "es" ? bil.es : bil.en;
-    const fallback = locale === "es" ? bil.en : bil.es;
-    const s = safeText(primary) || safeText(fallback);
-    return s;
+
+  if (isI18nMap(ing)) {
+    return resolveField(ing, null, locale);
   }
+
   return "";
 }
 
@@ -46,8 +61,8 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
 
   const imageUrl = safeText(cocktail.image_url);
   const showImg = !!imageUrl && !imgError;
-  const name = safeText(cocktail.name);
-  const description = safeText(cocktail.description);
+  const name = resolveMaybeI18n(cocktail.name, locale);
+  const description = resolveMaybeI18n(cocktail.description, locale);
   const ingredientsLine = getIngredientsDisplay(cocktail, locale);
   const ingredientsList = ingredientsLine
     ? ingredientsLine.split(",").map((s) => s.trim()).filter(Boolean)
@@ -83,7 +98,7 @@ export function CocktailCard({ cocktail }: CocktailCardProps) {
 
         {cocktail.category ? (
           <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400 min-w-0">
-            {cocktail.category}
+            {safeText(cocktail.category)}
           </p>
         ) : null}
 

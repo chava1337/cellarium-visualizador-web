@@ -3,6 +3,8 @@
  * GET ${MENU_API_URL}?token=<token>
  */
 
+import type { I18nStringArrayMap, I18nStringMap } from "@/src/lib/i18nFields";
+
 export interface Branch {
   id: string;
   name: string;
@@ -30,12 +32,18 @@ export interface Wine {
   stock_quantity: number;
   price_by_glass: number | null;
   price_by_bottle: number | null;
+  /** JSONB multilocale (clave pt para pt-BR). Campos legacy siguen siendo fallback. */
+  country_i18n?: I18nStringMap | null;
+  region_i18n?: I18nStringMap | null;
+  flavors_i18n?: I18nStringArrayMap | null;
+  pairing_i18n?: I18nStringArrayMap | null;
 }
 
-/** Ingredientes bilingües desde backend (jsonb). */
+/** Ingredientes multilocale desde backend (jsonb). */
 export interface IngredientsBilingual {
   es?: string | null;
   en?: string | null;
+  pt?: string | null;
 }
 
 /**

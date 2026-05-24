@@ -26,7 +26,7 @@ export function safeText(v: unknown, fallback = ""): string {
   }
   if (typeof v === "object") {
     const o = v as Record<string, unknown>;
-    const candidates = ["name", "label", "title", "es", "en", "value"];
+    const candidates = ["name", "label", "title", "es", "en", "pt", "value"];
     for (const key of candidates) {
       const val = o[key];
       if (typeof val === "string") {

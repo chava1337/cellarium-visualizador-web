@@ -8,23 +8,49 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import { translations, type Locale } from "@/src/i18n/translations";
+import {
+  translations,
+  type Locale,
+  type TranslationKey,
+} from "@/src/i18n/translations";
 
 const STORAGE_KEY = "cellarium-locale";
+
+const LOCALES: Locale[] = ["es", "en", "pt-BR"];
 
 type LocaleContextValue = {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: keyof typeof translations.es) => string;
+  t: (key: TranslationKey) => string;
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
 
+function isLocale(value: string | null): value is Locale {
+  return value !== null && LOCALES.includes(value as Locale);
+}
+
 function getStoredLocale(): Locale {
   if (typeof window === "undefined") return "es";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  if (stored === "es" || stored === "en") return stored;
+  if (isLocale(stored)) return stored;
   return "es";
+}
+
+/** Fallback UI: pt-BR → en → es → key; en → es → key; es → key */
+function translate(key: TranslationKey, locale: Locale): string {
+  if (locale === "pt-BR") {
+    return (
+      translations["pt-BR"][key] ??
+      translations.en[key] ??
+      translations.es[key] ??
+      key
+    );
+  }
+  if (locale === "en") {
+    return translations.en[key] ?? translations.es[key] ?? key;
+  }
+  return translations.es[key] ?? key;
 }
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
@@ -42,10 +68,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: keyof typeof translations.es): string => {
-      const dict = translations[locale];
-      return (dict && dict[key]) ?? (translations.es[key] as string) ?? key;
-    },
+    (key: TranslationKey) => translate(key, locale),
     [locale]
   );
 
